@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/NavigationView_groupMenu" android:checkableBehavior="single">
+        <item
+            android:id="@+id/NavigationView_ChooseinformationCustomer"
+            android:title="Danh sách khách hàng"
+            android:icon="@drawable/ic_baseline_people_24"
+            android:checkable="false">
+        </item>
+        <item
+            android:id="@+id/NavigationView_ChooseinformationShipper"
+            android:title="Danh sách shipper"
+           android:icon="@drawable/ic_baseline_two_wheeler_24"
+            android:checkable="false">
+        </item>
+        <item
+            android:id="@+id/NavigationView_ChooseOrderWWaitConfirm"
+            android:title="Danh sách Startup"
+            android:icon="@drawable/ic_baseline_confirmation_number_24"
+            android:checkable="false">
+        </item>
+        <item
+            android:id="@+id/NavigationView_ChooseOrderConfirmed"
+            android:title="Danh sách Company"
+            android:icon="@drawable/ic_baseline_check_circle_outline_24"
+            android:checkable="false">
+        </item>
+        <item
+            android:id="@+id/NavigationView_ChooseLogout"
+            android:title="Danh sách Company"
+            android:icon="@drawable/ic_baseline_cached_24"
+            android:checkable="false">
+        </item>
+
+    </group>
+</menu>

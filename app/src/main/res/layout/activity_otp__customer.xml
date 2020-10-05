@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:weightSum="8"
+    android:orientation="vertical"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_weight="3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/logo_suachua">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/ActivityOTPCustomer_txtLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:textSize="15sp"
+        android:textColor="#0480B9"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="10dp"
+        android:text="Mã OTP đã được gửi tới số điện thoại của bạn. Bạn cần nhập mã xác thực để tiếp tục." />
+    <EditText
+        android:id="@+id/ActivityOTPCustomer_edtOTP"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="Nhập mã OTP "
+        android:textColor="#39393C"
+        android:layout_marginHorizontal="20dp"
+        android:inputType="textPersonName" />
+    <Button
+        android:id="@+id/ActivityOTPCustomer_btnTiepTuc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="#F6F7F8"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="@drawable/botron_button"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="20dp"
+        android:text="Verify" />
+<ProgressBar
+    android:id="@+id/ActivityOTPCustomer_progressBarVerify"
+    android:layout_weight="1"
+    android:layout_marginTop="20dp"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp">
+</ProgressBar>
+
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="150dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/itemMenuDrink_imageMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:src="@drawable/menusuachua"></ImageView>
+    <TextView
+        android:id="@+id/itemMenuDrink_txtNameDrinkInMenu"
+        android:layout_width="wrap_content"
+        android:text="Sữa chua xoài"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#065391"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+    </TextView>
+</LinearLayout>

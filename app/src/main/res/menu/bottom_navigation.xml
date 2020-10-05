@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottomNavigation_News"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Tin tức">
+    </item>
+    <item
+        android:id="@+id/bottomNavigation_Point"
+        android:icon="@drawable/ic_baseline_money_24"
+        android:title="Điểm thưởng">
+    </item>
+    <item
+        android:id="@+id/bottomNavigation_Order"
+        android:icon="@drawable/ic_baseline_local_shipping_24"
+        android:title="Đặt hàng">
+    </item>
+    <item
+        android:id="@+id/bottomNavigation_LoveDrink"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="Yêu thích">
+    </item>
+    <item
+        android:id="@+id/bottomNavigation_Account"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Tài khoản">
+    </item>
+</menu>
