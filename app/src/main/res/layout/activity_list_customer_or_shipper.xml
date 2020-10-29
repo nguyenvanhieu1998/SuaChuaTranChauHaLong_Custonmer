@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/ActivityListCustomerOrShipper_txtTittle"
+        android:text="Danh sách khách hàng|shipper"
+        android:layout_weight="1"
+        android:textSize="25sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="0dp">
+    </TextView>
+    <ScrollView
+        android:layout_weight="9"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ActivityListCustomerOrShipper_recycleViewShipperOrCustomer"
+        android:layout_weight="9"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
+</LinearLayout>

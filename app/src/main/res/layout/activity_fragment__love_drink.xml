@@ -2,11 +2,20 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FF5722"
+    android:weightSum="10"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView
-        android:text="Fragment Love Drink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
+    <ImageView
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:background="@drawable/backgroudinfo"
+        android:layout_height="0dp">
+    </ImageView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/FragmentLoveDrink_RecyclerViewLoveDrink"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:scrollbars="vertical"
+        android:layout_weight="7">
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

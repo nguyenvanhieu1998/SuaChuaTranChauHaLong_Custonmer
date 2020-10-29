@@ -3,11 +3,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
+    android:scrollbars="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:layout_marginHorizontal="15dp"
         android:orientation="horizontal">
     <de.hdodenhof.circleimageview.CircleImageView
@@ -19,9 +20,12 @@
         <TextView
             android:id="@+id/FragmentNews_txtNameUserCurrent"
             android:text="User name"
-            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#090909"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="5dp"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content">
         </TextView>
         <ImageView
@@ -29,49 +33,86 @@
             android:src="@drawable/ic_baseline_notifications_none_24"
             android:layout_width="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="220dp"
+            android:layout_marginLeft="20dp"
             android:layout_height="wrap_content">
         </ImageView>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/FragmentNews_imgTittle"
-        android:layout_width="700dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="2"
-        android:src="@drawable/anhtintuc2"></ImageView>
-    <TextView
-        android:layout_weight="0.5"
-        android:text="Tin tức"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="5dp"
+        android:layout_weight="3"
+        android:src="@drawable/anhtintuc2"></ImageView>
+    <ScrollView
+        android:layout_weight="7"
+        android:layout_width="match_parent"
         android:layout_height="0dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <TextView
+        android:text="Tin tức"
+        android:textStyle="bold"
+        android:textColor="#070707"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     </TextView>
+            <ImageView
+                android:id="@+id/FragmentNews_imgAddNews"
+                android:layout_marginLeft="250dp"
+                android:src="@drawable/ic_baseline_add_circle_outline_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ImageView>
+        </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FragmentNews_recyclerNews"
-        android:layout_weight="4"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="5dp"
         android:scrollbars="horizontal"
+        android:backgroundTint="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <TextView
-        android:layout_weight="0.5"
         android:text="Khuyến mãi"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        android:textColor="#070707"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
     </TextView>
+            <ImageView
+                android:id="@+id/FragmentNews_imgAddPromotion"
+                android:layout_marginLeft="217dp"
+                android:src="@drawable/ic_baseline_add_circle_outline_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ImageView>
+        </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FragmentNews_recyclerKhuyenMai"
-        android:layout_weight="3"
-        android:layout_marginHorizontal="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginHorizontal="5dp"
         android:scrollbars="horizontal"
+        android:layout_marginBottom="50dp"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

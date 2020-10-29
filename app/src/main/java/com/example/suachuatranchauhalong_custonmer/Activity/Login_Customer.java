@@ -34,7 +34,9 @@ public class Login_Customer extends AppCompatActivity implements ViewLoginListen
     public void addControls()
     {
         edtEmail = (EditText) findViewById(R.id.ActivityLoginCustomer_edtEmail);
+        edtEmail.setText("trungthanh3@gmail.com");
         edtPass = (EditText) findViewById(R.id.ActivityLoginCustomer_edtPass);
+        edtPass.setText("12345678");
         btnLogin = (Button) findViewById(R.id.ActivityLoginCustomer_btnLogin);
         txtRedirectRegister = (TextView) findViewById(R.id.ActivityLoginCustomer_txtRedirectRegister);
         txtForgotPass = (TextView) findViewById(R.id.ActivityginCustomer_txtQuenPass);

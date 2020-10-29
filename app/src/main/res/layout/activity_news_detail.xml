@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/ActivityNewsDetail_txtTittle"
+        android:text="Tin khuyến mãi"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="25dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#0C0C0C"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+    <TextView
+        android:id="@+id/ActivityNewsDetail_txtDateCreate"
+        android:text="Ngày tạo"
+        android:layout_marginHorizontal="10dp"
+        android:layout_weight="0.4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp">
+    </TextView>
+    <ImageView
+        android:id="@+id/ActivityNewsDetail_imgNewTittle"
+        android:layout_weight="3"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="0dp">
+    </ImageView>
+    <TextView
+        android:id="@+id/ActivityNewsDetail_txtContent"
+        android:layout_weight="4"
+        android:textSize="15sp"
+        android:text="Nội dung"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </TextView>
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp">
+        <Button
+            android:id="@+id/ActivityNewsDetail_btnUpdate"
+            android:text="Cập nhật"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+        <Button
+            android:id="@+id/ActivityNewsDetail_btnHidden"
+            android:text="Ẩn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+    </LinearLayout>
+</LinearLayout>

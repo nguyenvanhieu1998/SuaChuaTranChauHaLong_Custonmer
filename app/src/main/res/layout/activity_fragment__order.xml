@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
         android:id="@+id/FragmentOrder_txtTittle"
@@ -14,48 +16,34 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp">
     </TextView>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
     <ScrollView
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:scrollbars="vertical"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/FragmentOrder_recycleViewMenuDrink"
         android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="10dp"
         android:layout_height="match_parent">
-    <ImageView
-        android:src="@drawable/logo_suachua"
-        android:layout_width="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="250dp">
-    </ImageView>
-    <ImageView
-        android:src="@drawable/logo_suachua"
-        android:layout_width="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_height="250dp">
-    </ImageView>
-    <ImageView
-        android:src="@drawable/menusuachua"
-        android:layout_width="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_height="250dp">
-    </ImageView>
-    <ImageView
-        android:src="@drawable/logo_suachua"
-        android:layout_width="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_height="250dp">
-    </ImageView>
-    </LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
     </ScrollView>
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/FragmentOrder_RecycleMenuSuaChua"-->
-<!--        android:layout_weight="9"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:orientation="vertical"-->
-<!--        android:scrollbars="vertical"-->
-<!--        android:layout_height="0dp">-->
-<!--    </androidx.recyclerview.widget.RecyclerView>-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/FragmentOrder_floatingActionButtonListener"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="normal"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTintMode="src_atop"
+        android:backgroundTint="#35ABE0"
+        android:src="@drawable/ic_baseline_adjust_24" />
+        <include layout="@layout/fab_layout"></include>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </LinearLayout>

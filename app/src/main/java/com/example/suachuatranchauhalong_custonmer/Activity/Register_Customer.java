@@ -67,7 +67,7 @@ public class Register_Customer extends AppCompatActivity implements View.OnClick
                 // Toast.makeText(this, "Register", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ActivityRegisterCustomer_txtRedirectLogin :
-                Intent intent = new Intent(Register_Customer.this, ActivityMain_Customer.class);
+                Intent intent = new Intent(Register_Customer.this, Login_Customer.class);
                 startActivity(intent);
                 // Toast.makeText(this, "Redirect Login", Toast.LENGTH_SHORT).show();
                 break;
@@ -82,7 +82,7 @@ public class Register_Customer extends AppCompatActivity implements View.OnClick
     @Override
     public void onRegisterSuccess() {
         Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(Register_Customer.this,ActivityMain_Customer.class);
+        Intent intent = new Intent(Register_Customer.this,SetInformationForUserRegister.class);
         startActivity(intent);
     }
 

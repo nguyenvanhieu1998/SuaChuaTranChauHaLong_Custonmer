@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:scrollbars="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:layout_height="200dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/FragmentDialogHiddenMenuDrink_recycleMenuDrink"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:scrollbars="vertical"
+                android:layout_marginVertical="20dp"
+                android:layout_height="200dp">
+            </androidx.recyclerview.widget.RecyclerView>
+        </ScrollView>
+        <LinearLayout android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:scrollbars="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android">>
+            <ImageView
+                android:id="@+id/FragmentDialogHiddenMenuDrink_imgTittleMenuDrink"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:src="@color/colorPrimary"
+                android:layout_height="160dp">
+            </ImageView>
+
+            <TextView
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="Tên menu "
+                android:layout_marginTop="20dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <EditText
+                android:id="@+id/FragmentDialogHiddenMenuDrink_edtNameMenuDrink"
+                android:textSize="16sp"
+                android:paddingStart="5dp"
+                android:layout_width="300dp"
+                android:enabled="false"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="50dp">
+            </EditText>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_gravity="center_horizontal"
+                >
+                <Button
+                    android:id="@+id/FragmentDialogHiddenMenuDrink_btnHiddenMenuDrink"
+                    android:text="Ẩn menu"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp" />
+                <Button
+                    android:id="@+id/FragmentDialogHiddenMenuDrink_btnCancel"
+                    android:text="Hủy"
+                    android:textAllCaps="false"
+                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textSize="13sp"
+                    android:layout_toRightOf="@+id/FragmentDialogHiddenMenuDrink_btnHiddenMenuDrink"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -3,77 +3,81 @@ package com.example.suachuatranchauhalong_custonmer.Object;
 import java.util.Date;
 
 public class Drink {
-    public int id;
-    public String name;
-    public int imageUri;
-    public int amount;
-    public int price;
-    public String type;
-    public String dateCreate;
+    private String idDrink;
+    private String idMenuDrink;
+    private String nameDrink;
+    private String imgUriDrink;
+    private int priceDrink;
+    private String dateCreateDrink;
+    private int status;
+    public Drink()
+    {
 
-    public Drink(int id, String name, int imageUri, int amount, int price, String type, String dateCreate) {
-        this.id = id;
-        this.name = name;
-        this.imageUri = imageUri;
-        this.amount = amount;
-        this.price = price;
-        this.type = type;
-        this.dateCreate = dateCreate;
     }
 
-    public int getId() {
-        return id;
+    public Drink(String idDrink, String idMenuDrink, String nameDrink, String imgUriDrink, int priceDrink, String dateCreateDrink,int status) {
+        this.idDrink = idDrink;
+        this.idMenuDrink = idMenuDrink;
+        this.nameDrink = nameDrink;
+        this.imgUriDrink = imgUriDrink;
+        this.priceDrink = priceDrink;
+        this.dateCreateDrink = dateCreateDrink;
+        this.status =  status;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getIdDrink() {
+        return idDrink;
     }
 
-    public String getName() {
-        return name;
+    public void setIdDrink(String idDrink) {
+        this.idDrink = idDrink;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getIdMenuDrink() {
+        return idMenuDrink;
     }
 
-    public int getImageUri() {
-        return imageUri;
+    public void setIdMenuDrink(String idMenuDrink) {
+        this.idMenuDrink = idMenuDrink;
     }
 
-    public void setImageUri(int imageUri) {
-        this.imageUri = imageUri;
+    public String getNameDrink() {
+        return nameDrink;
     }
 
-    public int getAmount() {
-        return amount;
+    public void setNameDrink(String nameDrink) {
+        this.nameDrink = nameDrink;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public String getImgUriDrink() {
+        return imgUriDrink;
     }
 
-    public int getPrice() {
-        return price;
+    public void setImgUriDrink(String imgUriDrink) {
+        this.imgUriDrink = imgUriDrink;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public int getPriceDrink() {
+        return priceDrink;
     }
 
-    public String getType() {
-        return type;
+    public void setPriceDrink(int priceDrink) {
+        this.priceDrink = priceDrink;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getDateCreateDrink() {
+        return dateCreateDrink;
     }
 
-    public String getDateCreate() {
-        return dateCreate;
+    public void setDateCreateDrink(String dateCreateDrink) {
+        this.dateCreateDrink = dateCreateDrink;
     }
 
-    public void setDateCreate(String dateCreate) {
-        this.dateCreate = dateCreate;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

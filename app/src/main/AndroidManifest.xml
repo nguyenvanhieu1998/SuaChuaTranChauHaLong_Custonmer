@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.suachuatranchauhalong_custonmer">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.MenuDrinkDetail"></activity>
+        <activity android:name=".Activity.DrinkDetail"></activity>
+        <activity android:name=".Activity.ActivityListCustomerOrShipper" />
+        <activity android:name=".Activity.ActivityNewsDetail" />
+        <activity android:name=".Activity.MenuDrinkDetail" />
+        <activity android:name=".Activity.SetInformationForUserRegister" />
         <activity android:name=".Fagment.Fragment_LoveDrink" />
         <activity android:name=".Fagment.Fragment_Account" />
         <activity android:name=".Fagment.Fragment_Order" />
         <activity android:name=".Fagment.Fragment_News" />
         <activity android:name=".Fagment.Fragment_Point" />
-        <activity android:name=".Activity.Login_Customer" />
+        <activity android:name=".Activity.ActivityMain_Customer" />
         <activity android:name=".Activity.Register_Customer" />
-        <activity android:name=".Activity.ActivityMain_Customer">
+        <activity android:name=".Activity.Login_Customer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

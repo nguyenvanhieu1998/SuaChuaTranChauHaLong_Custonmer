@@ -1,37 +1,57 @@
 package com.example.suachuatranchauhalong_custonmer.Object;
 
 public class MenuDrink {
-    public int id;
-    public String name;
-    public int imageUri;
-
-    public MenuDrink(int id, String name, int imageUri) {
-        this.id = id;
-        this.name = name;
-        this.imageUri = imageUri;
+    private String idMenuDrink;
+    private String nameMenuDrink;
+    private String imageUriMenuDrink;
+    private String dateCreateMenuDrink;
+    private int status;
+    public MenuDrink(){}
+    public MenuDrink(String idMenuDrink, String nameMenuDrink, String imageUriMenuDrink, String dateCreateMenuDrink, int status) {
+        this.idMenuDrink = idMenuDrink;
+        this.nameMenuDrink = nameMenuDrink;
+        this.imageUriMenuDrink = imageUriMenuDrink;
+        this.dateCreateMenuDrink = dateCreateMenuDrink;
+        this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public String getIdMenuDrink() {
+        return idMenuDrink;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdMenuDrink(String idMenuDrink) {
+        this.idMenuDrink = idMenuDrink;
     }
 
-    public String getName() {
-        return name;
+    public String getNameMenuDrink() {
+        return nameMenuDrink;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameMenuDrink(String nameMenuDrink) {
+        this.nameMenuDrink = nameMenuDrink;
     }
 
-    public int getImageUri() {
-        return imageUri;
+    public String getImageUriMenuDrink() {
+        return imageUriMenuDrink;
     }
 
-    public void setImageUri(int imageUri) {
-        this.imageUri = imageUri;
+    public void setImageUriMenuDrink(String imageUriMenuDrink) {
+        this.imageUriMenuDrink = imageUriMenuDrink;
+    }
+
+    public String getDateCreateMenuDrink() {
+        return dateCreateMenuDrink;
+    }
+
+    public void setDateCreateMenuDrink(String dateCreateMenuDrink) {
+        this.dateCreateMenuDrink = dateCreateMenuDrink;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

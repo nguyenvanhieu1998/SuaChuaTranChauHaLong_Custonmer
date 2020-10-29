@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_marginHorizontal="10dp"
+    android:weightSum="10"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/itemShipper_imageShipper"
+        android:src="@drawable/ic_ship"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="75dp">
+    </ImageView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/itemShipper_txtNameShipper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Họ tên shipper"
+            android:textSize="18sp"
+            android:textStyle="bold"></TextView>
+        <TextView
+            android:id="@+id/itemShipper_txtSexShipper"
+            android:text="Giới tính"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:id="@+id/itemShipper_txtOrderOfShipper"
+            android:layout_width="wrap_content"
+            android:text="Đã giao : 15 đơn hàng "
+            android:textSize="14sp"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+</LinearLayout>

@@ -55,6 +55,7 @@ public class ActivityMain_Customer extends AppCompatActivity {
         addControls();
         initDataFormAdmin();
         //   initListDrink();
+        addEventsFormAdmin();
         addEvents();
     }
     private void initDataFormAdmin() {
@@ -79,18 +80,18 @@ public class ActivityMain_Customer extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
         dateCreateDrink = "" + simpleDateFormat.format(calen.getTime());
         listDrink = new ArrayList<Drink>();
-        listDrink.add(new Drink(1,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(2,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(3,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(4,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(5,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(6,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(7,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(8,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
-        listDrink.add(new Drink(9,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(1,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(2,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(3,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(4,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(5,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(6,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(7,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(8,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
+//        listDrink.add(new Drink(9,"Sữa chua xoài",R.drawable.suachuaxoai,1,20000,"Sữa chua",dateCreateDrink));
         recyclerSuaChua.setHasFixedSize(true);
         recyclerSuaChua.setLayoutManager(new GridLayoutManager(this,2));
-        drinkAdapter = new DrinkAdapter(listDrink);
+//        drinkAdapter = new DrinkAdapter(listDrink);
         recyclerSuaChua.setAdapter(drinkAdapter);
     }
     public void initData()
@@ -113,52 +114,53 @@ public class ActivityMain_Customer extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.ActivityMainCustomer_bottomNaviViewMenu);
         framMainContent = (FrameLayout) findViewById(R.id.ActivityMainCustomer_frameMainContent);
     }
-//    private void addEventsFormAdmin() {
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                //menuItem.setCheckable(true);
-//                drawerLayout.closeDrawers();
-//                Intent intent = null;
-//                //  Toast.makeText(TrangChuActivity.this, "" + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-//                final int menuItemID = menuItem.getItemId();
-//                switch (menuItemID)
-//                {
-//                    case R.id.id_menu_baiVietChoDuyet :
-//                        check = 1;
-//                        break;
-//                    case R.id.id_menu_baiVietKhongDuyet:
-//                        check = 2;
-//                        break;
-//                    case R.id.id_menu_DSStartUp :
-//                        check = 3;
-//                        break;
-//                    case R.id.id_menu_DSCompany:
-//                        check = 4;
-//                        break;
-//                    case R.id.id_menu_DSPerson:
-//                        check = 5;
-//                        break;
-//                }
-//                if(check==1 || check==2)
-//                {
-//                    intent= new Intent(TrangChuActivity.this,BaiVietChoPheDuyetActivity.class);
-//                    intent.putExtra("key_itemMenu",check);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.anim.anim_intent_trai_sang_phai,R.anim.anim_intent_exit);
-//                }
-//                else
-//                {
+    int check;
+    private void addEventsFormAdmin() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                //menuItem.setCheckable(true);
+                drawerLayout.closeDrawers();
+                Intent intent = null;
+                //  Toast.makeText(TrangChuActivity.this, "" + menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                final int menuItemID = menuItem.getItemId();
+                switch (menuItemID)
+                {
+                    case R.id.NavigationView_ChooseinformationCustomer :
+                        check = 1;
+                        break;
+                    case R.id.NavigationView_ChooseinformationShipper:
+                        check = 2;
+                        break;
+                    case R.id.NavigationView_ChooseOrderWWaitConfirm :
+                        check = 3;
+                        break;
+                    case R.id.NavigationView_ChooseOrderConfirmed:
+                        check = 4;
+                        break;
+                    case R.id.NavigationView_ChooseLogout:
+                        check = 5;
+                        break;
+                }
+                if(check == 1 || check==2)
+                {
+                    intent= new Intent(ActivityMain_Customer.this,ActivityListCustomerOrShipper.class);
+                    intent.putExtra("key_itemMenu",check);
+                    startActivity(intent);
+                   // overridePendingTransition(R.anim.anim_intent_trai_sang_phai,R.anim.anim_intent_exit);
+                }
+                else
+                {
 //                    intent= new Intent(TrangChuActivity.this,DanhSachUserFilter.class);
 //                    intent.putExtra("key_itemMenu",check);
 //                    startActivity(intent);
 //                    overridePendingTransition(R.anim.anim_intent_trai_sang_phai,R.anim.anim_intent_exit);
-//                }
-//                return true;
-//            }
-//        });
-//
-//    }
+                }
+                return true;
+            }
+        });
+
+    }
 @Override
 public boolean onOptionsItemSelected(MenuItem item) {
     if(actionBarDrawerToggle.onOptionsItemSelected(item))

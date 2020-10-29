@@ -1,12 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="#ff0"
+    android:weightSum="10"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView
-        android:text="Fragment Account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
+    <ImageView
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:background="@drawable/backgroudinfo"
+        android:layout_height="0dp">
+    </ImageView>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_weight="5.5"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:text="Họ tên : Nguyễn Văn Hiếu"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:text="Giới tính : Nam"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:text="Họ tên : Nguyễn Văn Hiếu"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:text="SĐT : 0967508481"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:text="Địa chỉ : Pháp Vân - Tứ Hiệp"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <Button
+            android:text="Cập nhật"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+    </LinearLayout>
 </LinearLayout>
