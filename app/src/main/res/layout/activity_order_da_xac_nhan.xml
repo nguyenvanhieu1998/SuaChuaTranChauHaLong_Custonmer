@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/ActivityOrderDaXacNhan_txtTittle"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="25dp"
+        android:text="Hiện tại không có đơn hàng nào"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="10"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ActivityDaXacNhan_toolbar"
+        android:layout_width="match_parent"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextColor="#FFFFFF"
+        android:background="#0923B1"
+        android:layout_height="?actionBarSize">
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ActivityOrderDaXacNhan_recycleViewOrder"
+        android:layout_weight="9"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>
+</RelativeLayout>

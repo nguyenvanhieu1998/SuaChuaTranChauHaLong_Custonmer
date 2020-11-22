@@ -161,7 +161,7 @@ public class FragmentDialogAddDrinkForAdmin extends DialogFragment implements Vi
             addDrinkToFirebase();
         }
     }
-
+    String photoURL = "";
     private void addDrinkToFirebase() {
         calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -176,7 +176,7 @@ public class FragmentDialogAddDrinkForAdmin extends DialogFragment implements Vi
         key_push_drink = databaseReference.child("ListDrink").push().getKey();
         // progressDialog.setMessage("Đang cập nhật.........");
         // progressDialog.show();
-        StorageReference mountainsRef = mStorageRef.child("Drink").child(key_push_drink+".png");
+        final StorageReference mountainsRef = mStorageRef.child("Drink").child(key_push_drink+".png");
 
 // Create a reference to 'images/mountains.jpg'
         StorageReference mountainImagesRef = mStorageRef.child("images/" + key_push_drink + ".png\"");
@@ -202,26 +202,31 @@ public class FragmentDialogAddDrinkForAdmin extends DialogFragment implements Vi
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoURL = downloadUrl.toString();
-                Log.d("photoURL",photoURL);
-                Drink drink = new Drink(key_push_drink,listenerIDMenuDrink.getIdMenuDrink().toString(),edtNameDrink.getText().toString(),photoURL,Integer.parseInt(edtPriceDrink.getText().toString()),dateCreateDrink,1);
-                databaseReference.child("ListDrink").child(key_push_drink).setValue(drink, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if(databaseError == null)                        {
-                            Toast.makeText(getActivity(), "Bạn đã thêm đồ uống thành công", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                        else
-                        {
-                            Toast.makeText(getActivity(), "Bạn đã thêm đồ uống thất bại", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                            // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
-                        }
+                mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    photoURL = uri.toString();
+                    Drink drink = new Drink(key_push_drink,listenerIDMenuDrink.getIdMenuDrink().toString(),edtNameDrink.getText().toString(),photoURL,Integer.parseInt(edtPriceDrink.getText().toString()),dateCreateDrink,1,0);
+                    databaseReference.child("ListDrink").child(key_push_drink).setValue(drink, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError == null)                        {
+                                Toast.makeText(getActivity(), "Bạn đã thêm đồ uống thành công", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                            else
+                            {
+                                Toast.makeText(getActivity(), "Bạn đã thêm đồ uống thất bại", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
+                            }
 
-                    }
-                });
+                        }
+                    });
+                }
+            });
+                Log.d("photoURL",photoURL);
+
             }
         });
     }

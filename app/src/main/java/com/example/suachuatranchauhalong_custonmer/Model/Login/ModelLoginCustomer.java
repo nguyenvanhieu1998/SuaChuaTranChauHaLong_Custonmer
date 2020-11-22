@@ -1,5 +1,7 @@
 package com.example.suachuatranchauhalong_custonmer.Model.Login;
 
+import android.app.ProgressDialog;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -9,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ModelLoginCustomer {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+
     //Khai báo interface ModelResponeToPresenterListener để trả kết quả xử lý cho lớp presenter
     ModelResponeToPresenterListener callback;
     public ModelLoginCustomer(ModelResponeToPresenterListener callback)

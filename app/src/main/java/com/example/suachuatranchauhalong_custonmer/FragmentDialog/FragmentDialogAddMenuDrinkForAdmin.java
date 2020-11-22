@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.suachuatranchauhalong_custonmer.Object.Drink;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerTypeNews;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.News;
@@ -150,7 +151,7 @@ public class FragmentDialogAddMenuDrinkForAdmin extends DialogFragment implement
             addMenuDrinkToFirebase();
         }
     }
-
+    String photoURL = "";
     private void addMenuDrinkToFirebase() {
         calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -165,7 +166,7 @@ public class FragmentDialogAddMenuDrinkForAdmin extends DialogFragment implement
         key_push_menudrink = databaseReference.child("ListMenuDrink").push().getKey();
         // progressDialog.setMessage("Đang cập nhật.........");
         // progressDialog.show();
-        StorageReference mountainsRef = mStorageRef.child("MenuDrink").child(key_push_menudrink+".png");
+        final StorageReference mountainsRef = mStorageRef.child("MenuDrink").child(key_push_menudrink+".png");
 
 // Create a reference to 'images/mountains.jpg'
         StorageReference mountainImagesRef = mStorageRef.child("images/" + key_push_menudrink + ".png\"");
@@ -191,26 +192,31 @@ public class FragmentDialogAddMenuDrinkForAdmin extends DialogFragment implement
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoURL = downloadUrl.toString();
-                Log.d("photoURL",photoURL);
-                MenuDrink menuDrink = new MenuDrink(key_push_menudrink,edtNameMenuDrink.getText().toString(),photoURL,dateCreateMenuDrink,1);
-                databaseReference.child("ListMenuDrink").child(key_push_menudrink).setValue(menuDrink, new DatabaseReference.CompletionListener() {
+                mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if(databaseError == null)                        {
-                            Toast.makeText(getActivity(), "Bạn đã thêm menu thành công", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                        else
-                        {
-                            Toast.makeText(getActivity(), "Bạn đã thêm menu thất bại", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                            // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(Uri uri) {
+                        photoURL = uri.toString();
+                        MenuDrink menuDrink = new MenuDrink(key_push_menudrink,edtNameMenuDrink.getText().toString(),photoURL,dateCreateMenuDrink,1);
+                        databaseReference.child("ListMenuDrink").child(key_push_menudrink).setValue(menuDrink, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if(databaseError == null)                        {
+                                    Toast.makeText(getActivity(), "Bạn đã thêm menu thành công", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getActivity(), "Bạn đã thêm menu thất bại", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
+                                }
 
+                            }
+                        });
                     }
                 });
+                Log.d("photoURL",photoURL);
+
             }
         });
     }

@@ -26,6 +26,7 @@ import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerTypeNews;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.News;
+import com.example.suachuatranchauhalong_custonmer.Object.OrderDetail;
 import com.example.suachuatranchauhalong_custonmer.Object.Shipper;
 import com.example.suachuatranchauhalong_custonmer.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -203,49 +204,7 @@ public class FragmentDialogHiddenMenuDrinkForAdmin extends DialogFragment implem
 
     }
 
-//    private void updateMenuDrink() {
-//        if(edtNameMenuDrink.getText().toString().trim().equals(""))
-//        {
-//            Toast.makeText(getActivity(), "Bạn phải  nhập tên của menu ", Toast.LENGTH_SHORT).show();
-//        }
-//        else if(checkUpdateImage==false && nameMenuDrink.equals(edtNameMenuDrink.getText().toString().trim()))
-//        {
-//            Toast.makeText(getActivity(), "Bạn đã không thay đổi thông tin gì ", Toast.LENGTH_SHORT).show();
-//        }
-//        else
-//        {
-//            updateMenuDrinkToFirebase();
-//        }
-//    }
-
     private void updateStatusMenuDrinkToFirebase() {
-//        StorageReference mountainsRef = mStorageRef.child("MenuDrink").child(idMenuDrinkCurrent +".png");
-//        StorageReference mountainImagesRef = mStorageRef.child("images/" + idMenuDrinkCurrent + ".png\"");
-//
-//// While the file names are the same, the references point to different files
-//        mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-//        mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
-//
-//        // Get the data from an ImageView as bytes
-//        imgMenuDrink.setDrawingCacheEnabled(true);
-//        imgMenuDrink.buildDrawingCache();
-//        Bitmap bitmap = ((BitmapDrawable) imgMenuDrink.getDrawable()).getBitmap();
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        byte[] data = baos.toByteArray();
-//
-//        UploadTask uploadTask = mountainsRef.putBytes(data);
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                String photoURL = downloadUrl.toString();
-//                Log.d("photoURL",photoURL);
                 databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("status").setValue(0);
                // databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("nameMenuDrink").setValue(edtNameMenuDrink.getText().toString());
                 Toast.makeText(getContext(), "Ẩn menu thành công", Toast.LENGTH_SHORT).show();
@@ -270,6 +229,11 @@ public class FragmentDialogHiddenMenuDrinkForAdmin extends DialogFragment implem
 
     @Override
     public void onItemClickListener(Shipper shipper) {
+
+    }
+
+    @Override
+    public void onItemClickListener(OrderDetail orderDetail) {
 
     }
 }

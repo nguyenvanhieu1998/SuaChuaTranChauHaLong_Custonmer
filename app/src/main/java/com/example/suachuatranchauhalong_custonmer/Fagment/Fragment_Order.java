@@ -28,6 +28,7 @@ import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialog
 import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogAddNewsForAdmin;
 import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogHiddenMenuDrinkForAdmin;
 import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogUpdateMenuDrinkForAdmin;
+import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.Drink;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.News;
@@ -72,6 +73,7 @@ public class Fragment_Order extends Fragment implements View.OnClickListener{
         initReferenceObject();
         setMenuDrink();
         addEvents();
+        checkAdmin();
         return convertiew;
     }
     private void initReferenceObject()
@@ -81,7 +83,28 @@ public class Fragment_Order extends Fragment implements View.OnClickListener{
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
         //String uid = firebaseUser.getUid().toString();
     }
+    private void checkAdmin() {
+        databaseReference.child("ListCustomer").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Customer customer = dataSnapshot.getValue(Customer.class);
+                if(customer.getPermission().equals("admin"))
+                {
+                    holder.fabListener.show();
+                    //btnUpdate.setVisibility(View.VISIBLE);
+//                    txtName.setText(mb.getName());
+//                    Picasso.with(TrangChuActivity.this).load(mb.getPhotoURL()).into(imgAdmin);
+//                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId())

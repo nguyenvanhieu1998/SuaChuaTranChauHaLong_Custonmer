@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/FragmentPoint_txtThongBao"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="15dp"
+        android:text="Chức năng chỉ dành cho khách hàng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
 <LinearLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:id="@+id/FragmentPoint_frameContent"
     android:background="#F1F1F1"
     android:weightSum="10"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -12,9 +27,9 @@
         android:layout_height="0dp">
     </LinearLayout>
     <LinearLayout
-        android:layout_weight="7"
-        android:background="#FBFBF8"
-        android:layout_marginTop="-100dp"
+        android:layout_weight="6.5"
+        android:background="@drawable/custome_backgroud_fragmentaccount"
+        android:layout_marginTop="-80dp"
         android:orientation="vertical"
         android:layout_marginHorizontal="30dp"
         android:layout_width="match_parent"
@@ -31,6 +46,7 @@
         </TextView>
         <TextView
             android:text="0"
+            android:id="@+id/FragmentPoint_txtPoint"
             android:layout_marginLeft="20dp"
             android:textSize="20sp"
             android:textColor="#021A91"
@@ -38,71 +54,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </TextView>
-        <ProgressBar
+        <SeekBar
+            android:id="@+id/FragmentPoint_seekbarPoint"
             android:layout_width="match_parent"
             android:background="#FF9800"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:layout_height="10dp">
-        </ProgressBar>
+            android:layout_height="5dp">
+        </SeekBar>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_height="wrap_content">
             <TextView
                 android:text="0"
-                android:textSize="20sp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="50"
+                android:textSize="16sp"
+                android:layout_marginLeft="120dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             </TextView>
             <TextView
                 android:text="100"
-                android:textSize="20sp"
-                android:layout_marginLeft="220dp"
+                android:textSize="16sp"
+                android:layout_marginLeft="100dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             </TextView>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <TextView
-            android:layout_marginTop="30dp"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="20dp"
-            android:text="Lịch sử đổi điểm thưởng"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-
-        <TextView
-            android:layout_width="234dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Đổi điểm thưởng"
-            android:textSize="15sp"
-            android:textStyle="bold"></TextView>
-        <TextView
-            android:layout_marginTop="10dp"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="20dp"
-            android:text="Danh sách Voucher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <TextView
-            android:layout_marginTop="10dp"
-            android:textSize="15sp"
-            android:layout_marginLeft="20dp"
-            android:textStyle="bold"
-            android:text="Hướng dẫn đổi điểm thưởng"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/FragmentPoint_recycleViewPoint"
+           android:layout_width="match_parent"
+           android:layout_marginTop="50dp"
+           android:layout_marginHorizontal="10dp"
+           android:layout_height="wrap_content">
+       </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>
+</RelativeLayout>

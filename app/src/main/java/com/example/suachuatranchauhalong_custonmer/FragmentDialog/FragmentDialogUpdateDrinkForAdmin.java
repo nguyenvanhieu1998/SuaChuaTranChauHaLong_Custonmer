@@ -153,7 +153,7 @@ public class FragmentDialogUpdateDrinkForAdmin extends DialogFragment implements
 
     }
     String nameDrink;
-            int priceDrink;
+            float priceDrink;
     private void initData()
     {
       //  Log.d("Type News " ,listenerTypeNews.getTypeNews().toString());
@@ -193,31 +193,12 @@ public class FragmentDialogUpdateDrinkForAdmin extends DialogFragment implements
             updateDrinkToFirebase();
         }
     }
-
+    String photoURL = "";
     private void updateDrinkToFirebase() {
-//        calen = Calendar.getInstance();
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//        dateCreateDrink = "" + simpleDateFormat.format(calen.getTime());
-//        databaseReference = FirebaseDatabase.getInstance().getReference();
-//        mStorageRef = FirebaseStorage.getInstance().getReference();
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseUser = firebaseAuth.getCurrentUser();
-////        String email2 = user.getEmail();
-//        String userCurrentID = firebaseUser.getUid().toString();
-//        listenerTypeNews = new ListenerTypeNews();
-    //    key_push_drink = databaseReference.child("ListDrink").push().getKey();
-        // progressDialog.setMessage("Đang cập nhật.........");
-        // progressDialog.show();
-        StorageReference mountainsRef = mStorageRef.child("Drink").child(listenerIdDrink.getIdDrink()+".png");
-
-// Create a reference to 'images/mountains.jpg'
+        final StorageReference mountainsRef = mStorageRef.child("Drink").child(listenerIdDrink.getIdDrink()+".png");
         StorageReference mountainImagesRef = mStorageRef.child("images/" + listenerIdDrink.getIdDrink() + ".png\"");
-
-// While the file names are the same, the references point to different files
         mountainsRef.getName().equals(mountainImagesRef.getName());    // true
         mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
-
-        // Get the data from an ImageView as bytes
         imgDrink.setDrawingCacheEnabled(true);
         imgDrink.buildDrawingCache();
         Bitmap bitmap = ((BitmapDrawable) imgDrink.getDrawable()).getBitmap();
@@ -234,15 +215,19 @@ public class FragmentDialogUpdateDrinkForAdmin extends DialogFragment implements
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoURL = downloadUrl.toString();
+                mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        photoURL = uri.toString();
+                        databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("imgUriDrink").setValue(photoURL);
+                        databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("nameDrink").setValue(edtNameDrink.getText().toString().trim());
+                        databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("priceDrink").setValue(Float.parseFloat(edtPriceDrink.getText().toString().trim()));
+                        Toast.makeText(getActivity(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
                 Log.d("photoURL",photoURL);
               //  Drink drink = new Drink(listenerIdDrink.getIdDrink(),listenerIdDrink.getIdMenuDrink(),edtNameDrink.getText().toString(),photoURL,Integer.parseInt(edtPriceDrink.getText().toString()),dateCreateDrink,1);
-                databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("imgUriDrink").setValue(photoURL);
-                databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("nameDrink").setValue(edtNameDrink.getText().toString().trim());
-                databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("priceDrink").setValue(Integer.parseInt(edtPriceDrink.getText().toString().trim()));
-                Toast.makeText(getActivity(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
             }
         });
     }

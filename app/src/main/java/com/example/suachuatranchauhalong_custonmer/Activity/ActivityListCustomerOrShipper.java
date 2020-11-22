@@ -15,6 +15,7 @@ import com.example.suachuatranchauhalong_custonmer.Adapter.ShipperAdapter;
 import com.example.suachuatranchauhalong_custonmer.InterfaceOnClick.OnItemClickListener;
 import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
+import com.example.suachuatranchauhalong_custonmer.Object.OrderDetail;
 import com.example.suachuatranchauhalong_custonmer.Object.Shipper;
 import com.example.suachuatranchauhalong_custonmer.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -122,5 +123,10 @@ public class ActivityListCustomerOrShipper extends AppCompatActivity implements 
     @Override
     public void onItemClickListener(Shipper shipper) {
         Toast.makeText(this, "" + shipper.getIdShipper(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClickListener(OrderDetail orderDetail) {
+
     }
 }

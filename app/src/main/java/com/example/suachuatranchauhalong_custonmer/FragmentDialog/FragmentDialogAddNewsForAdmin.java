@@ -142,7 +142,7 @@ public class FragmentDialogAddNewsForAdmin extends DialogFragment implements Vie
             addNewsToFirebase();
         }
     }
-
+    String photoURL = "";
     private void addNewsToFirebase() {
         calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -157,7 +157,7 @@ public class FragmentDialogAddNewsForAdmin extends DialogFragment implements Vie
         key_push_news = databaseReference.child("ListNews").child(listenerTypeNews.getTypeNews().toString()).push().getKey();
         // progressDialog.setMessage("Đang cập nhật.........");
         // progressDialog.show();
-        StorageReference mountainsRef = mStorageRef.child("News").child(key_push_news+".png");
+        final StorageReference mountainsRef = mStorageRef.child("News").child(key_push_news+".png");
 
 // Create a reference to 'images/mountains.jpg'
         StorageReference mountainImagesRef = mStorageRef.child("images/" + key_push_news + ".png\"");
@@ -183,9 +183,10 @@ public class FragmentDialogAddNewsForAdmin extends DialogFragment implements Vie
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoURL = downloadUrl.toString();
-                Log.d("photoURL",photoURL);
+            mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                    photoURL = uri.toString();
                 News news = new News(key_push_news,photoURL,edtTittle.getText().toString(),edtContent.getText().toString(),dateCreateNews,listenerTypeNews.getTypeNews().toString(),1);
                 databaseReference.child("ListNews").child(listenerTypeNews.getTypeNews().toString()).child(key_push_news).setValue(news, new DatabaseReference.CompletionListener() {
                     @Override
@@ -203,6 +204,11 @@ public class FragmentDialogAddNewsForAdmin extends DialogFragment implements Vie
 
                     }
                 });
+                    }
+                    });
+
+                        Log.d("photoURL",photoURL);
+
             }
         });
     }

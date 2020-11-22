@@ -1,21 +1,22 @@
 package com.example.suachuatranchauhalong_custonmer.Object;
 
-import java.util.Date;
+
 
 public class Drink {
     private String idDrink;
     private String idMenuDrink;
     private String nameDrink;
     private String imgUriDrink;
-    private int priceDrink;
+    private float priceDrink;
     private String dateCreateDrink;
     private int status;
+    private int statusLove;
     public Drink()
     {
 
     }
 
-    public Drink(String idDrink, String idMenuDrink, String nameDrink, String imgUriDrink, int priceDrink, String dateCreateDrink,int status) {
+    public Drink(String idDrink, String idMenuDrink, String nameDrink, String imgUriDrink, float priceDrink, String dateCreateDrink,int status,int statusLove) {
         this.idDrink = idDrink;
         this.idMenuDrink = idMenuDrink;
         this.nameDrink = nameDrink;
@@ -23,6 +24,7 @@ public class Drink {
         this.priceDrink = priceDrink;
         this.dateCreateDrink = dateCreateDrink;
         this.status =  status;
+        this.statusLove = statusLove;
     }
 
     public String getIdDrink() {
@@ -57,11 +59,11 @@ public class Drink {
         this.imgUriDrink = imgUriDrink;
     }
 
-    public int getPriceDrink() {
+    public float getPriceDrink() {
         return priceDrink;
     }
 
-    public void setPriceDrink(int priceDrink) {
+    public void setPriceDrink(float priceDrink) {
         this.priceDrink = priceDrink;
     }
 
@@ -79,5 +81,13 @@ public class Drink {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getStatusLove() {
+        return statusLove;
+    }
+
+    public void setStatusLove(int statusLove) {
+        this.statusLove = statusLove;
     }
 }

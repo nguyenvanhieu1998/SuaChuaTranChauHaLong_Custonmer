@@ -14,6 +14,12 @@
             android:checkable="false">
         </item>
         <item
+            android:id="@+id/NavigationView_ListVoucher"
+            android:title="Danh sách voucher"
+            android:icon="@drawable/ic_baseline_card_giftcard_24"
+            android:checkable="false">
+        </item>
+        <item
             android:id="@+id/NavigationView_ChooseOrderWWaitConfirm"
             android:title="Đơn hàng cần xác nhận"
             android:icon="@drawable/ic_baseline_confirmation_number_24"
@@ -21,7 +27,19 @@
         </item>
         <item
             android:id="@+id/NavigationView_ChooseOrderConfirmed"
-            android:title="Đơn hàng đã xác nhận"
+            android:title="Danh sách đơn hàng"
+            android:icon="@drawable/ic_baseline_check_circle_outline_24"
+            android:checkable="false">
+        </item>
+<!--        <item-->
+<!--            android:id="@+id/NavigationView_ConfirmRedeenPoint"-->
+<!--            android:title="Yêu cầu đổi điểm thưởng"-->
+<!--            android:icon="@drawable/ic_baseline_credit_card_24"-->
+<!--            android:checkable="false">-->
+<!--        </item>-->
+        <item
+            android:id="@+id/NavigationView_ChooseOrderStatistical"
+            android:title="Thống kê đơn hàng"
             android:icon="@drawable/ic_baseline_check_circle_outline_24"
             android:checkable="false">
         </item>

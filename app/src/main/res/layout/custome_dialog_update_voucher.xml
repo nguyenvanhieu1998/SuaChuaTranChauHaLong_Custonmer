@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:paddingHorizontal="30dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/dialogUpdateVoucher_imgVoucher"
+        android:layout_width="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_height="100dp">
+    </ImageView>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/dialogUpdateVoucher_imgFolder"
+            android:src="@drawable/ic_folder_open_black_24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp">
+        </ImageView>
+        <ImageView
+            android:id="@+id/dialogUpdateVoucher_imgCamera"
+            android:src="@drawable/ic_photo_camera_black_24dp"
+            android:layout_width="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="20dp">
+        </ImageView>
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="30dp"
+        android:text="Giá trị khuyến mãi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <EditText
+        android:id="@+id/dialogUpdateVoucher_edtPromotion"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"></EditText>
+    <TextView
+        android:text="Giá trị áp dụng"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <EditText
+        android:id="@+id/dialogUpdateVoucher_edtGiaTriApDung"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"></EditText>
+    <TextView
+        android:text="Điểm quy đổi"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <EditText
+        android:id="@+id/dialogUpdateVoucher_edtDiemQuyDoi"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"></EditText>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/dialogUpdateVoucher_btnUpdateVoucher"
+            android:text="Cập nhật"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+        <Button
+            android:id="@+id/dialogUpdateVoucher_btnHiden"
+            android:text="Ẩn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+        <Button
+            android:id="@+id/dialogUpdateVoucher_btnCancel"
+            android:text="Huỷ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>

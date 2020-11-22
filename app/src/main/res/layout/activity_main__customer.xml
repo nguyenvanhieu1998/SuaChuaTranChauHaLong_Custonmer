@@ -13,6 +13,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/ActivityMainCustomer_toolbar"
         android:layout_width="match_parent"
+        android:background="#0923B1"
         android:layout_height="?actionBarSize">
     </androidx.appcompat.widget.Toolbar>
     <FrameLayout
@@ -33,13 +34,14 @@
 </LinearLayout>
 <com.google.android.material.navigation.NavigationView
         android:id="@+id/id_NaviView"
+        android:visibility="gone"
         android:layout_marginTop="40dp"
         app:headerLayout="@layout/navigation_header"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:fitsSystemWindows="true"
-        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemTextColor="#000000"
         app:menu="@menu/drawer_navigationview_menu"
         android:layout_gravity="start">
         <include layout="@layout/navigation_header"></include>

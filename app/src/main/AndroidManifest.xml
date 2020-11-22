@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.suachuatranchauhalong_custonmer">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -9,13 +11,35 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_suachua"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.DrinkDetail"></activity>
+        <activity android:name=".Activity.ActivityTutorialRedeenPoint"></activity>
+        <activity android:name=".Activity.ActivityListVoucherOfCustomer" />
+        <activity android:name=".Activity.ActivityRedeenPoint" />
+        <activity android:name=".Activity.ActivityListVoucherConfirm" />
+        <activity android:name=".Activity.ActivityListVoucherForAdmin" />
+        <activity android:name=".Activity.ActivityThongKeDonHang" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_api_key" />
+
+        <activity android:name=".Activity.FollowOrder" />
+        <activity android:name=".Activity.OrderDaXacNhan" />
+        <activity android:name=".Activity.ActivityOrderDetail" />
+        <activity android:name=".Activity.OrderChoXacNhan" />
+        <activity android:name=".Activity.ActivityChangePassword" />
+        <activity android:name=".Activity.ListOrderOfCustomerCurrent" />
+        <activity android:name=".Activity.OrderCurrentOfCustomer" />
+        <activity android:name=".Activity.OrderDetailOfCustomer" />
+        <activity android:name=".Activity.ActivityOrder" />
+        <activity android:name=".Activity.ActivityCart" />
+        <activity android:name=".Activity.InformationUserCurrent" />
+        <activity android:name=".Activity.DrinkDetail" />
         <activity android:name=".Activity.ActivityListCustomerOrShipper" />
         <activity android:name=".Activity.ActivityNewsDetail" />
         <activity android:name=".Activity.MenuDrinkDetail" />

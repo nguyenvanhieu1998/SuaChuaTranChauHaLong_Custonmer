@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="12"
+    android:background="#FFFFFF"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    <LinearLayout-->
+    <!--        android:layout_weight="0.6"-->
+    <!--        android:weightSum="5"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp">-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ActivityTutorialRedeenPoint_toolbar"
+        android:layout_width="match_parent"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextColor="#FFFFFF"
+        android:background="#0923B1"
+        android:layout_height="?actionBarSize">
+    </androidx.appcompat.widget.Toolbar>
+</LinearLayout>

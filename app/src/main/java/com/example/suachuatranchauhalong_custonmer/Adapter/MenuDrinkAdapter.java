@@ -50,6 +50,7 @@ public class MenuDrinkAdapter extends RecyclerView.Adapter<MenuDrinkAdapter.View
             public void onClick(View view) {
                 Intent intent = new Intent(context, MenuDrinkDetail.class);
                 intent.putExtra("IDMenuDrink",menuDrink.getIdMenuDrink());
+                intent.putExtra("idMenuDrink",menuDrink.getIdMenuDrink());
                 context.startActivity(intent);
             }
         });

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerTypeNews;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.News;
+import com.example.suachuatranchauhalong_custonmer.Object.OrderDetail;
 import com.example.suachuatranchauhalong_custonmer.Object.Shipper;
 import com.example.suachuatranchauhalong_custonmer.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -112,6 +114,10 @@ public class FragmentDialogUpdateMenuDrinkForAdmin extends DialogFragment implem
 
             }
         });
+        DividerItemDecoration dividerHorizontal =
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+
+        recyclerViewMenuDrink.addItemDecoration(dividerHorizontal);
         menuDrinkAdapter = new MenuDrink_FragmentDialogUpdateAndHiddenMenuDrink(getActivity(),menuDrinkArrayList,this);
         recyclerViewMenuDrink.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true));
         recyclerViewMenuDrink.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -228,9 +234,9 @@ public class FragmentDialogUpdateMenuDrinkForAdmin extends DialogFragment implem
             updateMenuDrinkToFirebase();
         }
     }
-
+    String photoURL = "";
     private void updateMenuDrinkToFirebase() {
-        StorageReference mountainsRef = mStorageRef.child("MenuDrink").child(idMenuDrinkCurrent +".png");
+        final StorageReference mountainsRef = mStorageRef.child("MenuDrink").child(idMenuDrinkCurrent +".png");
         StorageReference mountainImagesRef = mStorageRef.child("images/" + idMenuDrinkCurrent + ".png\"");
 
 // While the file names are the same, the references point to different files
@@ -254,13 +260,18 @@ public class FragmentDialogUpdateMenuDrinkForAdmin extends DialogFragment implem
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String photoURL = downloadUrl.toString();
+                mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        photoURL = uri.toString();
+                        databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("imageUriMenuDrink").setValue(photoURL);
+                        databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("nameMenuDrink").setValue(edtNameMenuDrink.getText().toString());
+                        Toast.makeText(getContext(), "Cập nhật menu thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
                 Log.d("photoURL",photoURL);
-                databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("imageUriMenuDrink").setValue(photoURL);
-                databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("nameMenuDrink").setValue(edtNameMenuDrink.getText().toString());
-                Toast.makeText(getContext(), "Cập nhật menu thành công", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+
             }
         });
     }
@@ -280,6 +291,11 @@ public class FragmentDialogUpdateMenuDrinkForAdmin extends DialogFragment implem
 
     @Override
     public void onItemClickListener(Shipper shipper) {
+
+    }
+
+    @Override
+    public void onItemClickListener(OrderDetail orderDetail) {
 
     }
 }

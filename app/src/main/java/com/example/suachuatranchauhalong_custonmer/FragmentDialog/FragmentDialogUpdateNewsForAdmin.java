@@ -1,6 +1,7 @@
 package com.example.suachuatranchauhalong_custonmer.FragmentDialog;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.suachuatranchauhalong_custonmer.Activity.Login_Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerTypeNews;
 import com.example.suachuatranchauhalong_custonmer.Object.News;
 import com.example.suachuatranchauhalong_custonmer.R;
@@ -182,8 +184,13 @@ public class FragmentDialogUpdateNewsForAdmin extends DialogFragment implements 
             updateNewsToFirebase();
         }
     }
+    String photoURL = "";
+    ProgressDialog progressDialog;
     private void updateNewsToFirebase() {
-        StorageReference mountainsRef = mStorageRef.child("News").child(listenerTypeNews.getUidNews().toString()+".png");
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Cập nhật....");
+        progressDialog.show();
+        final StorageReference mountainsRef = mStorageRef.child("News").child(listenerTypeNews.getUidNews().toString()+".png");
 
 // Create a reference to 'images/mountains.jpg'
         StorageReference mountainImagesRef = mStorageRef.child("images/" + listenerTypeNews.getUidNews().toString() + ".png\"");
@@ -209,14 +216,21 @@ public class FragmentDialogUpdateNewsForAdmin extends DialogFragment implements 
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                // Uri downloadUrl = taskSnapshot.getStorage().getDownloadUrl().getResult();
-                String photoURL = downloadUrl.toString();
+                mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        photoURL = uri.toString();
+                        databaseReference.child("ListNews").child(typeNews).child(idNews).child("imgTittle").setValue(photoURL);
+                        databaseReference.child("ListNews").child(typeNews).child(idNews).child("descri").setValue(edtContent.getText().toString());
+                        databaseReference.child("ListNews").child(typeNews).child(idNews).child("tittle").setValue(edtTittle.getText().toString());
+                        Toast.makeText(getContext(), "Cập nhật tin tức thành công", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        dialog.dismiss();
+                    }
+                });
                 Log.d("Type News Dialog : ", typeNews);
                 Log.d("id News Dialog : ", idNews);
-                databaseReference.child("ListNews").child(typeNews).child(idNews).child("imgTittle").setValue(photoURL);
-                databaseReference.child("ListNews").child(typeNews).child(idNews).child("descri").setValue(edtContent.getText().toString());
-                databaseReference.child("ListNews").child(typeNews).child(idNews).child("tittle").setValue(edtTittle.getText().toString());
+
 //                HashMap<String,Object> hashMap = new HashMap<>();
 //                hashMap.put("imgTittle",photoURL);
 //                hashMap.put("descri",edtContent.getText().toString());
@@ -224,8 +238,7 @@ public class FragmentDialogUpdateNewsForAdmin extends DialogFragment implements 
 //                databaseReference.updateChildren(hashMap);
                 Log.d("BimapUpdate : " , photoURL);
                // getBitmapFaceUserCurrent();
-                Toast.makeText(getContext(), "Cập nhật tin tức thành công", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+
             }
         });
     }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/itemVoucher_imgVoucher"
+        android:src="@drawable/voucher"
+        android:layout_width="170dp"
+        android:layout_height="80dp">
+    </ImageView>
+</RelativeLayout>

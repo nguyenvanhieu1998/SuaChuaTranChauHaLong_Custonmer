@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +53,8 @@ public class ModelSetInformationUserCurrent {
 
         }
     }
+    String photoURL = "";
+    boolean getSex = false;
     private void setDataForUser(final String uid,final String name,final Bitmap bitmapFace,
                                 final String getSexUserCurrent,final String phone,final String address,
                                 final String email,ImageView imgFace){
@@ -64,7 +67,7 @@ public class ModelSetInformationUserCurrent {
         String userCurrentID = user.getUid().toString();
         // progressDialog.setMessage("Đang cập nhật.........");
         // progressDialog.show();
-        StorageReference mountainsRef = mStorageRef.child("Customer").child(userCurrentID+".png");
+        final StorageReference mountainsRef = mStorageRef.child("Customer").child(userCurrentID+".png");
 
 // Create a reference to 'images/mountains.jpg'
         StorageReference mountainImagesRef = mStorageRef.child("images/" +userCurrentID+ ".png\"");
@@ -92,7 +95,6 @@ public class ModelSetInformationUserCurrent {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                boolean getSex = false;
                 if(getSexUserCurrent.equals("Nam"))
                 {
                     getSex = true;
@@ -101,32 +103,32 @@ public class ModelSetInformationUserCurrent {
                 {
                     getSex = false;
                 }
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                // Uri downloadUrl = taskSnapshot.getStorage().getDownloadUrl().getResult();
-                String photoURL = downloadUrl.toString();
-
-//
-                Log.d("photoURL",photoURL);
-                // Log.d("downloadUrl",downloadUrl.toString());
-                Customer customer = new Customer(uid,photoURL,name,getSex,email,phone,address,"customer",0,0);
-                //  mb = new member(name,testAccountType,email,phone,address,userCurrentID,photoURL,status,"user");
-                databaseReference.child("ListCustomer").child(user.getUid().toString()).setValue(customer, new DatabaseReference.CompletionListener() {
+                mountainsRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                        if(databaseError == null)
-                        {
-                            callback.onSetInformationUserRegisterSuccess();
-                        }
-                        else
-                        {
-                            callback.onSetInformationUserRegisterFaile();
-                            //Toast.makeText(CapNhatDangKiActivity.this, "Cập nhật không thành công !", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(Uri uri) {
+                        photoURL = uri.toString();
+                        Customer customer = new Customer(uid,photoURL,name,getSex,email,phone,address,"customer",0,0);
+                        //  mb = new member(name,testAccountType,email,phone,address,userCurrentID,photoURL,status,"user");
+                        databaseReference.child("ListCustomer").child(user.getUid().toString()).setValue(customer, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                if(databaseError == null)
+                                {
+                                    callback.onSetInformationUserRegisterSuccess();
+                                }
+                                else
+                                {
+                                    callback.onSetInformationUserRegisterFaile();
+                                    //Toast.makeText(CapNhatDangKiActivity.this, "Cập nhật không thành công !", Toast.LENGTH_SHORT).show();
+                                }
 
+                            }
+                        });
                     }
                 });
+                Log.d("photoURL",photoURL);
+                // Log.d("downloadUrl",downloadUrl.toString());
+
             }
         });
     }

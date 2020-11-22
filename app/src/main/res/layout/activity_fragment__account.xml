@@ -1,66 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
+<RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/FragmentAccount_txtThongBao"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="15dp"
+        android:text="Chức năng chỉ dành cho khách hàng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+<LinearLayout
+    android:id="@+id/FragmentAccount_linearContent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
-        android:layout_weight="3"
-        android:layout_width="match_parent"
-        android:background="@drawable/backgroudinfo"
-        android:layout_height="0dp">
-    </ImageView>
 
+    <FrameLayout
+        android:layout_weight="0.3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </FrameLayout>
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_weight="5.5"
-        android:layout_margin="5dp"
+        android:id="@+id/FragmentAccount_frameInformationCustomer"
+        android:layout_weight="4"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/custome_backgroud_fragmentaccount"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/FragmentAccount_imgUserCurrent"
+            android:layout_width="120dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="100dp">
+        </de.hdodenhof.circleimageview.CircleImageView>
         <TextView
-            android:text="Họ tên : Nguyễn Văn Hiếu"
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
-            android:layout_margin="5dp"
+            android:id="@+id/FragmentAccount_txtNameUserCurrent"
+            android:text="Nguyễn Văn Hiếu"
+            android:layout_marginTop="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </TextView>
-        <TextView
-            android:text="Giới tính : Nam"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        </TextView>
-        <TextView
-            android:text="Họ tên : Nguyễn Văn Hiếu"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <TextView
-            android:text="SĐT : 0967508481"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <TextView
-            android:text="Địa chỉ : Pháp Vân - Tứ Hiệp"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </TextView>
-        <Button
-            android:text="Cập nhật"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </Button>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginLeft="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:src="@drawable/ic_baseline_emoji_events_24_fragmentaccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </ImageView>
+                    <TextView
+                        android:textSize="14sp"
+                        android:text="Điểm tích lũy"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/FragmentAccount_txtPointUserCurrent"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:textColor="#F84F1A"
+                    android:layout_marginLeft="60dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:gravity="right"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginRight="7dp"
+                    android:layout_width="match_parent"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:src="@drawable/ic_baseline_local_shipping_24_fragmentaccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </ImageView>
+                    <TextView
+                        android:textSize="14sp"
+                        android:text="Đơn hàng"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/FragmentAccount_txtMountOrderUserCurrent"
+                    android:text="0"
+                    android:textSize="18sp"
+                    android:textColor="#F84F1A"
+                    android:layout_marginRight="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_weight="0.2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/FragmentAccount_frameSetting"
+        android:layout_weight="4.6"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/custome_backgroud_fragmentaccount"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/FragmentAccount_recycleFragmentAccount"
+            android:scrollbars="vertical"
+            android:layout_marginVertical="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>
+</RelativeLayout>

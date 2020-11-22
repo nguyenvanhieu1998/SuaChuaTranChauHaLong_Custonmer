@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="vertical"
+    android:background="#FFFFFF"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/ActivityOrderOfCustomer_toolbar"
+            android:layout_width="match_parent"
+            app:subtitleTextColor="#FFFFFF"
+            app:titleTextColor="#FFFFFF"
+            android:background="#0923B1"
+            android:layout_height="?actionBarSize">
+        </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:id="@+id/ActivityOrderOfCustomer_txtMaOrder"
+            android:text="Mã đơn hàng : "
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="#021A91"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:id="@+id/ActivityOrderOfCustomer_txtStatusThanhToan"
+            android:text="Chưa thanh toán"
+            android:textSize="14sp"
+            android:textColor="#FF5722"
+            android:layout_gravity="right"
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+        <LinearLayout
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/ActivityOrderOfCustomer_txtStatusOrder"
+                android:text="Trạng thái"
+                android:textSize="14sp"
+                android:layout_marginLeft="5dp"
+                android:textColor="#021A91"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <CheckBox
+                android:id="@+id/ActivityOrderOfCustomer_checkBoxChoXacNhan"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:text="Chờ xác nhận"
+                android:layout_height="wrap_content">
+            </CheckBox>
+            <CheckBox
+                android:id="@+id/ActivityOrderOfCustomer_checkBoxDaXacNhan"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:text="Đã xác nhận"
+                android:layout_height="wrap_content">
+            </CheckBox>
+                <CheckBox
+                    android:id="@+id/ActivityOrderOfCustomer_checkBoxDangChuanBiDo"
+                    android:textSize="13sp"
+                    android:textColor="#000000"
+                    android:enabled="false"
+                    android:layout_width="wrap_content"
+                    android:text="Đang chuẩn bị đồ"
+                    android:layout_height="wrap_content">
+                </CheckBox>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/ActivityOrderOfCustomer_checkBoxDangGiaoHang"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:enabled="false"
+                android:text="Đang giao hàng"
+                android:layout_height="wrap_content">
+            </CheckBox>
+            <ImageView
+                android:visibility="invisible"
+                android:id="@+id/ActivityOrderOfCustomer_imgLocationShipper"
+                android:src="@drawable/ic_baseline_location_on_24"
+                android:layout_width="20dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="20dp">
+            </ImageView>
+        </LinearLayout>
+            <CheckBox
+                android:id="@+id/ActivityOrderOfCustomer_checkBoxDaGiaoHang"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:text="Đã giao hàng"
+                android:layout_height="wrap_content">
+            </CheckBox>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:background="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/ActivityOrderOfCustomer_txtTittleCustomer"
+                android:text="Thông tin khách hàng"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:id="@+id/ActivityOrderOfCustomer_txtNameCustomer"
+                android:text="Họ tên : Nguyễn Văn Hiếu"
+                android:textSize="13sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:id="@+id/ActivityOrderOfCustomer_txtPhoneCustomer"
+                android:text="Số điện thoại : 0967508481"
+                android:textSize="13sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:id="@+id/ActivityOrderOfCustomer_txtAddressCustomer"
+                android:text="Địa chỉ : KĐT Pháp Vân - Tứ Hiệp"
+                android:textSize="13sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Thông tin sản phẩm"
+                android:id="@+id/ActivityOrderOfCustomer_txtTittleInfoDrink"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ActivityOrderOfCustomer_recyclerDrink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:scrollbars="vertical">
+                    </androidx.recyclerview.widget.RecyclerView>
+            </ScrollView>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="15sp"
+                android:id="@+id/ActivityOrderOfCustomer_txtTittleBillTotal"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textColor="#000000"
+                android:text="Tổng thanh toán"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="Số lượng :"
+                android:id="@+id/ActivityOrderOfCustomer_txtMountDrinkDetail"
+                android:layout_marginTop="5dp"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="Thanh toán :"
+                android:id="@+id/ActivityOrderOfCustomer_txtThanhToan"
+                android:layout_marginTop="5dp"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="Khuyến mãi :"
+                android:id="@+id/ActivityOrderOfCustomer_txtKhuyenMai"
+                android:layout_marginTop="5dp"
+                android:textSize="13sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="Phí vận chuyển :"
+                android:id="@+id/ActivityOrderOfCustomer_txtPhiVanChuyen"
+                android:layout_marginTop="5dp"
+                android:textSize="13sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+            <TextView
+                android:text="Tổng thanh toán :"
+                android:id="@+id/ActivityOrderOfCustomer_txtTongThanhToan"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:textSize="13sp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="right">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ActivityOrderOfCustomer_btnHuyDonHang"
+                android:background="#021A91"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:layout_marginRight="10dp"
+                android:text="Huỷ đơn hàng"
+                android:textColor="#FFFFFF"></Button>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

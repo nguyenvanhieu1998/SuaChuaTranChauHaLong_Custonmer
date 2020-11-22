@@ -2,27 +2,26 @@ package com.example.suachuatranchauhalong_custonmer.Object;
 
 public class Order {
     private String idOrder;
-    private String idOrderDetail;
     private String idCustomer;
     private int mount;
-    private int price;
-    private int promotion;
-    private int priceShip;
-    private int totalPrice;
+    private float price;
+    private float promotion;
+    private float priceShip;
+    private float totalPrice;
     private String dateOrder;
     private int status;
     private boolean statusThanhToan;
+    private int statusCurrent;
 
     public Order()
     {
 
     }
 
-    public Order(String idOrder, String idOrderDetail, String idCustomer,
-                 int mount, int price, int promotion, int priceShip,
-                 int totalPrice, String dateOrder, int status, boolean statusThanhToan) {
+    public Order(String idOrder, String idCustomer,
+                 int mount, float price, float promotion, float priceShip,
+                 float totalPrice, String dateOrder, int status, boolean statusThanhToan,int statusCurrent) {
         this.idOrder = idOrder;
-        this.idOrderDetail = idOrderDetail;
         this.idCustomer = idCustomer;
         this.mount = mount;
         this.price = price;
@@ -32,6 +31,7 @@ public class Order {
         this.dateOrder = dateOrder;
         this.status = status;
         this.statusThanhToan = statusThanhToan;
+        this.statusCurrent = statusCurrent;
     }
 
     public String getIdOrder() {
@@ -40,14 +40,6 @@ public class Order {
 
     public void setIdOrder(String idOrder) {
         this.idOrder = idOrder;
-    }
-
-    public String getIdOrderDetail() {
-        return idOrderDetail;
-    }
-
-    public void setIdOrderDetail(String idOrderDetail) {
-        this.idOrderDetail = idOrderDetail;
     }
 
     public String getIdCustomer() {
@@ -66,35 +58,35 @@ public class Order {
         this.mount = mount;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public int getPromotion() {
+    public float getPromotion() {
         return promotion;
     }
 
-    public void setPromotion(int promotion) {
+    public void setPromotion(float promotion) {
         this.promotion = promotion;
     }
 
-    public int getPriceShip() {
+    public float getPriceShip() {
         return priceShip;
     }
 
-    public void setPriceShip(int priceShip) {
+    public void setPriceShip(float priceShip) {
         this.priceShip = priceShip;
     }
 
-    public int getTotalPrice() {
+    public float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -120,5 +112,13 @@ public class Order {
 
     public void setStatusThanhToan(boolean statusThanhToan) {
         this.statusThanhToan = statusThanhToan;
+    }
+
+    public int getStatusCurrent() {
+        return statusCurrent;
+    }
+
+    public void setStatusCurrent(int statusCurrent) {
+        this.statusCurrent = statusCurrent;
     }
 }

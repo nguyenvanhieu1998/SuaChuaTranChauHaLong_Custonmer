@@ -62,6 +62,7 @@ public class SetInformationForUserRegister extends AppCompatActivity implements 
         imgCameraGetImage = (ImageView) findViewById(R.id.ActivitySetInformationForUserRegister_imgCamera);
         rdgSex = (RadioGroup) findViewById(R.id.ActivitySetInformationForUserRegister_radioGroupSex);
         rdbMen = (RadioButton) findViewById(R.id.ActivitySetInformationForUserRegister_rdbMen);
+        rdbMen.setChecked(true);
         rdbGirl = (RadioButton) findViewById(R.id.ActivitySetInformationForUserRegister_rdbGirl);
         btnUpdate = (Button) findViewById(R.id.ActivitySetInformationForUserRegister_btnUpdate);
         imgFace.setImageResource(R.drawable.logo_suachua);

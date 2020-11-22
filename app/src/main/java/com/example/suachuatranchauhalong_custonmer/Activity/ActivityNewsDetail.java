@@ -1,6 +1,8 @@
 package com.example.suachuatranchauhalong_custonmer.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +15,12 @@ import android.widget.Toast;
 
 import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogAddNewsForAdmin;
 import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogUpdateNewsForAdmin;
+import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerTypeNews;
 import com.example.suachuatranchauhalong_custonmer.Object.News;
 import com.example.suachuatranchauhalong_custonmer.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,14 +37,18 @@ public class ActivityNewsDetail extends AppCompatActivity implements View.OnClic
     ImageView imgTittle;
     Button btnUpdate,btnHidden;
     String idNews,typeNews;
+    FirebaseUser firebaseUser;
+    FirebaseAuth firebaseAuth;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
-        initReferenceObject();
+        initReferencesObject();
         addControls();
         setData();
         addEvents();
+        checkAdmin();
     }
 
     private void addEvents() {
@@ -49,6 +57,11 @@ public class ActivityNewsDetail extends AppCompatActivity implements View.OnClic
     }
 
     private void addControls() {
+        toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityNewsDetail_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Tin tức");
         txtTittle = (TextView) findViewById(R.id.ActivityNewsDetail_txtTittle);
         txtContent = (TextView) findViewById(R.id.ActivityNewsDetail_txtContent);
         txtDateCreate = (TextView) findViewById(R.id.ActivityNewsDetail_txtDateCreate);
@@ -56,11 +69,10 @@ public class ActivityNewsDetail extends AppCompatActivity implements View.OnClic
         btnUpdate = (Button) findViewById(R.id.ActivityNewsDetail_btnUpdate);
         btnHidden = (Button) findViewById(R.id.ActivityNewsDetail_btnHidden);
     }
-
-    private void initReferenceObject()
-    {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        intent = getIntent();
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
     private void setData() {
          idNews = intent.getStringExtra("IDNew").toString();
@@ -86,7 +98,15 @@ public class ActivityNewsDetail extends AppCompatActivity implements View.OnClic
             }
         });
     }
-
+    private void initReferencesObject() {
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        intent = getIntent();
+        //   intent = getIntent();
+        //    listenerIdDrink = new ListenerIdDrink();
+        // Toast.makeText(this, "" + intent.getStringExtra("IDMenuDrink"), Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId())
@@ -102,7 +122,28 @@ public class ActivityNewsDetail extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+    private void checkAdmin() {
+        databaseReference.child("ListCustomer").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Customer customer = dataSnapshot.getValue(Customer.class);
+                if(customer.getPermission().equals("admin"))
+                {
+                    btnHidden.setVisibility(View.VISIBLE);
+                    btnUpdate.setVisibility(View.VISIBLE);
+//                    txtName.setText(mb.getName());
+//                    Picasso.with(TrangChuActivity.this).load(mb.getPhotoURL()).into(imgAdmin);
+//                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void hiddenNews() {
         databaseReference.child("ListNews").child(intent.getStringExtra("TypeNews").toString())
                 .child(intent.getStringExtra("IDNew").toString()).child("status").setValue(0);
