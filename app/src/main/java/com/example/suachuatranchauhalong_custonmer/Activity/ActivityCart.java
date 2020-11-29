@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,11 @@ import com.example.suachuatranchauhalong_custonmer.Object.OrderDetail2;
 import com.example.suachuatranchauhalong_custonmer.Object.Shipper;
 import com.example.suachuatranchauhalong_custonmer.Object.Voucher;
 import com.example.suachuatranchauhalong_custonmer.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -62,7 +70,23 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ActivityCart extends AppCompatActivity implements OnItemClickListener,ListenerIdVoucher {
+public class ActivityCart extends AppCompatActivity implements OnItemClickListener,ListenerIdVoucher  , GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+    //Location GPS mới
+    public static final String TAG = ActivityCart.class.getSimpleName();
+    private static final long UPDATE_INTERVAL = 5000;
+    private static final long FASTEST_INTERVAL = 5000;
+    private static final int REQUEST_LOCATION_PERMISSION = 100;
+
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private Location mLastLocation;
+    private boolean mIsAutoUpdateLocation;
+
+    private TextView mTvCurrentLocation;
+    private Button mBtnGetLocation;
+
+    //
     DatabaseReference databaseReference;
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
@@ -81,25 +105,221 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
     ListenerPriceOrderOfCart listenerPriceOrderOfCart;
     double lat = 20.985045682596606;
     double log = 105.83865921205458;
+    Switch mSwAutoUpdateLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         initReferenceObject();
         addControls();
-        checkPermission();
+        //checkPermission();
+        InitLocationGPS();
+       // giaTriKhuyenMai = 0;
         getPricePromotion();
         //InitAddress();
-        InitAddress();
+        //InitAddress();
         addEvents();
-       getAllDataInOrder();
+        getAllDataInOrder();
 
     }
+    private void initViews() {
+      //  mTvCurrentLocation = (TextView) findViewById(R.id.tv_current_location);
+       // mBtnGetLocation = (Button) findViewById(R.id.btn_get_location);
+         mSwAutoUpdateLocation = (Switch) findViewById(R.id.sw_auto_update_location);
+    }
+    private void InitLocationGPS()
+    {
+        initViews();
+        requestLocationPermissions();
 
-//    public ActivityCart(float khuyenMaiiiii)
-//    {
-//          khuyenMai = khuyenMaiiiii;
-//    }
+        if (isPlayServicesAvailable()) {
+            setUpLocationClientIfNeeded();
+            buildLocationRequest();
+        } else {
+            Toast.makeText(this, "Device does not support Google Play services", Toast.LENGTH_SHORT).show();
+        }
+
+
+//        if (isGpsOn()) {
+//            startLocationUpdates();
+//            updateUi();
+//        } else {
+//            Toast.makeText(ActivityCart.this, "GPS is OFF", Toast.LENGTH_SHORT).show();
+//        }
+
+                mSwAutoUpdateLocation.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (!isGpsOn()) {
+                            Toast.makeText(ActivityCart.this, "GPS is OFF",
+                                    Toast.LENGTH_SHORT).show();
+                            mSwAutoUpdateLocation.setChecked(false);
+                            return;
+                        }
+                        mIsAutoUpdateLocation = isChecked;
+                        if (isChecked) {
+                            startLocationUpdates();
+                            phiVanChuyen = (int) distanceBetween2Points(21.009550515590462, 105.82018764110443,mLastLocation.getLatitude(),mLastLocation.getLongitude())*7000;
+                            ///
+                            khuyenMai = (price*giaTriKhuyenMai)/100;
+                            txtKhuyenMai.setText("Khuyến mãi : " + khuyenMai);
+                            totalThanhToan = price + phiVanChuyen - khuyenMai;
+                            txtTotalThanhToan.setText("Tổng thanh toán : " + totalThanhToan);
+
+
+                            txtPhiVanChuyen.setText("Phí vận chuyển : " + phiVanChuyen);
+                            mSwAutoUpdateLocation.setVisibility(View.GONE);
+                            Toast.makeText(ActivityCart.this, "Cho phép truy cập vị trí của bạn", Toast.LENGTH_SHORT).show();
+                            Log.d("Phí vận chuyển : ","" + phiVanChuyen);
+                            Log.d("Vị trí khách hàng : ","lat : " + mLastLocation.getLatitude() + "log : " + mLastLocation.getLongitude());
+                        } else {
+                            stopLocationUpdates();
+                        }
+                    }
+                });
+
+
+//        btnApDungVoucher.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isGpsOn()) {
+//                    startLocationUpdates();
+//                    updateUi();
+//                } else {
+//                    Toast.makeText(ActivityCart.this, "GPS is OFF", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+    }
+    private void updateUi() {
+        if (mLastLocation != null) {
+
+//            mTvCurrentLocation.setText(String.format(Locale.getDefault(), "%f, %f",
+//                    mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+        }
+    }
+
+    private void requestLocationPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_LOCATION_PERMISSION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    requestLocationPermissions();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private boolean isPlayServicesAvailable() {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
+                == ConnectionResult.SUCCESS;
+    }
+
+    private boolean isGpsOn() {
+        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    private void setUpLocationClientIfNeeded() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+    }
+
+    private void buildLocationRequest() {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+    }
+
+    protected void startLocationUpdates() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (lastLocation != null) {
+            mLastLocation = lastLocation;
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        Log.d(TAG, String.format(Locale.getDefault(), "onLocationChanged : %f, %f",
+                location.getLatitude(), location.getLongitude()));
+        mLastLocation = location;
+        if (mIsAutoUpdateLocation) {
+            updateUi();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
+
+//////////////////
+
+
+
 
     private void checkPermission() {
 
@@ -136,7 +356,15 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         btnDatHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogDatHang();
+                if(mSwAutoUpdateLocation.isChecked()==false)
+                {
+                    Toast.makeText(ActivityCart.this, "Bạn cần cho phép truy cập vị trí hiện tại của bạn để shipper có thể giao hàng", Toast.LENGTH_LONG).show();
+                }
+                else if(mSwAutoUpdateLocation.isChecked())
+                {
+                    DialogDatHang();
+                }
+
             }
         });
         btnApDungVoucher.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +420,9 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
                 location.setLatitude(position.getLatitude());
                 location.setLongitude(position.getLongitude());
 
+                Log.d("latitude change", ""+position.getLatitude());
+                Log.d("longitude change", ""+position.getLongitude());
+
                 List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 diaChi = addresses.get(0).getAddressLine(0);
                 Log.d("AddLine", addresses.get(0).getAddressLine(0));
@@ -223,8 +454,10 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Intent intent = new Intent(getActivity(), Login_Customer.class);
-//                startActivity(intent);
+
+                //Location GPS mới
+                ///
+
                 updateIdOrder();
                 Toast.makeText(ActivityCart.this, "Bạn đã đặt hàng thành công", Toast.LENGTH_SHORT).show();
                // finish();
@@ -244,6 +477,9 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
    // String key_order;20.985045682596606, 105.83865921205458
 
     private void updateIdOrder() {
+
+
+
         final String dateOrder;
         Calendar calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
@@ -253,6 +489,15 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
                 mount, price, khuyenMai, phiVanChuyen, totalThanhToan, dateOrder,
                 1, false, 1);
         databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).setValue(order);
+
+        try {
+            databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).child("ListVoucher").child(idVoucher).child("statusUse").setValue(2);
+        }catch (NullPointerException ex)
+        {
+
+        }
+
+
         databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -263,11 +508,17 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
                             databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
                                     child(orderDetail.getIdOrderDetail()).child("idOrder").setValue(key_order);
 
-//                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(location.getLatitude() + "");
-//                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(location.getLongitude() + "");
-//
-                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(lat);
-                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(log);
+//                          //Ban đầu
+//                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(lat);
+//                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(log);
+                           ////
+
+
+                            //Location GPS mới
+                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(mLastLocation.getLatitude());
+                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(mLastLocation.getLongitude());
+                            ///
+
 
                             databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
                                     child(key_order).child("ListOrderDetail").
@@ -297,7 +548,7 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         Intent intent = new Intent(this, OrderDetailOfCustomer.class);
         intent.putExtra("idOrder",key_order);
         startActivity(intent);
-       // overridePendingTransition(R.anim.anim_intent_trai_sang_phai,R.anim.anim_intent_exit);
+        overridePendingTransition(R.anim.anim_intent_trai_sang_phai,R.anim.anim_intent_exit);
 
     }
 //    private void updateIdOrder2() {
@@ -371,6 +622,16 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         }catch (NullPointerException ex){
 
         }
+
+        //Location GPS mới
+        if (mGoogleApiClient != null
+                && mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient = null;
+        }
+        ///
+        Log.d(TAG, "onDestroy LocationService");
         super.onDestroy();
     }
 
@@ -426,25 +687,59 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         double d = R * c;
         return d;
     }
-   static int giaTriKhuyenMai;
+    int giaTriKhuyenMai;
+    String idVoucher;
     private void getPricePromotion()
     {
         databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    final OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
-                    if (orderDetail.getIdOrder().toString().equals("")) {
-                        try {
-                            giaTriKhuyenMai = Integer.parseInt(dataSnapshot1.child("pricePromotion").getValue().toString());
-                        }catch (NullPointerException ex)
-                        {
+                if(dataSnapshot.exists())
+                {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        final OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
+                        if (orderDetail.getIdOrder().toString().equals("")) {
+                            try {
+                                idVoucher = dataSnapshot1.child("idVoucher").getValue().toString();
+                                Log.d("idVoucher1",""+idVoucher);
+                            }catch (NullPointerException ex)
+                            {
+
+                            }
 
                         }
 
                     }
+                    try {
+                        databaseReference.child("ListVoucher").child(idVoucher).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                try {
+                                    giaTriKhuyenMai = Integer.parseInt(snapshot.child("pricePromotion").getValue().toString());
+                                    Log.d("giaTriKhuyenMai1",""+giaTriKhuyenMai);
+                                    khuyenMai = (price*giaTriKhuyenMai)/100;
+                                    txtKhuyenMai.setText("Khuyến mãi : " + khuyenMai);
+                                    totalThanhToan = price + phiVanChuyen - khuyenMai;
+                                    txtTotalThanhToan.setText("Tổng thanh toán : " + totalThanhToan);
+                                }catch (NullPointerException ex)
+                                {
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }catch (NullPointerException ex)
+                    {
+
+                    }
 
                 }
+
                 //     khuyenMai = listenerPriceOrderOfCart.getGiaTriKhuyenMai();
             }
 
@@ -453,21 +748,19 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
 
             }
         });
+        Log.d("idVoucher2",""+idVoucher);
+        Log.d("giaTriKhuyenMai2",""+giaTriKhuyenMai);
+
     }
     private void getAllDataInOrder() {
 
-//         mount = Integer.parseInt(intent.getStringExtra("Mount"));
-//         price  = Float.parseFloat(intent.getStringExtra("Price"));
-        phiVanChuyen = (int) distanceBetween2Points(21.009550515590462, 105.82018764110443,location.getLatitude(),location.getLongitude())*7000;
-//         khuyenMai =0;
-//        txtMount.setText("Số lượng : " + intent.getStringExtra("Mount"));
-//        txtThanhToan.setText("Thanh toán : "+intent.getStringExtra("Price"));
-//        totalThanhToan = price+phiVanCHuyen+khuyenMai;
-//        txtTotalThanhToan.setText("Tổng thanh toán : "+totalThanhToan);
-//        txtKhuyenMai.setText("Khuyến mãi : " + khuyenMai);
-        txtPhiVanChuyen.setText("Phí vận chuyển : " + phiVanChuyen);
-        Log.d("Phí vận chuyển : ","" + phiVanChuyen);
-        Log.d("Vị trí khách hàng : ","lat : " + location.getLatitude() + "log : " + location.getLongitude());
+        // phí vận chuyển ban đầu
+      //  phiVanChuyen = (int) distanceBetween2Points(21.009550515590462, 105.82018764110443,location.getLatitude(),location.getLongitude())*7000;
+        ///
+
+        // phí vận chuyển mới
+
+
         orderDetailArrayList = new ArrayList<>();
         databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -503,11 +796,11 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
                     }
 
                 }
-                khuyenMai = (price*giaTriKhuyenMai)/100;
-                txtKhuyenMai.setText("Khuyến mãi : " + khuyenMai);
                 txtMount.setText("Số lượng : " + mount);
                 txtThanhToan.setText("Thanh toán : " + price);
                 listenerPriceOrderOfCart.setPriceOrder(price);
+                khuyenMai = (price*giaTriKhuyenMai)/100;
+                txtKhuyenMai.setText("Khuyến mãi : " + khuyenMai);
                 totalThanhToan = price + phiVanChuyen - khuyenMai;
                 txtTotalThanhToan.setText("Tổng thanh toán : " + totalThanhToan);
                 detailOrderAdapter.notifyDataSetChanged();

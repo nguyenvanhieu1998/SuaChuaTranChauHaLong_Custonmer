@@ -193,14 +193,14 @@ public class FragmentDialogListVoucherOfCart extends DialogFragment implements V
         }
         else if(priceOrder<=voucher.getPriceApply())
         {
-            databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
+            databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         final OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
                         if (orderDetail.getIdOrder().toString().equals("")) {
                             databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
-                                    child(orderDetail.getIdOrderDetail()).child("pricePromotion").setValue(voucher.getPricePromotion());
+                                    child(orderDetail.getIdOrderDetail()).child("idVoucher").setValue(voucher.getIdVoucher());
                         }
 
                     }

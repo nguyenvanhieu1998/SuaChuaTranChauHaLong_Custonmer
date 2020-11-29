@@ -159,6 +159,7 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
                 child("ListOrderDetail").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderDetailArrayList.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                      OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
                         orderDetailArrayList.add(orderDetail);

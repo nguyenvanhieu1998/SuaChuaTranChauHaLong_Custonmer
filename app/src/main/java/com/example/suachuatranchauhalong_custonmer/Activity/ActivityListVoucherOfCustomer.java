@@ -67,12 +67,22 @@ public class ActivityListVoucherOfCustomer extends AppCompatActivity implements 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     voucherArrayList.clear();
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                    try {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                        {
+                            if(Integer.parseInt(dataSnapshot1.child("statusUse").getValue().toString())==1)
+                            {
+                                Voucher voucher = dataSnapshot1.getValue(Voucher.class);
+                                voucherArrayList.add(voucher);
+                            }
+
+
+                        }
+                    }catch (NullPointerException ex)
                     {
-                           Voucher voucher = dataSnapshot1.getValue(Voucher.class);
-                            voucherArrayList.add(voucher);
 
                     }
+
                     voucherAdapter.notifyDataSetChanged();
 
                 }
