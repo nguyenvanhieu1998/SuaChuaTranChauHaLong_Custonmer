@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFF"
-    android:scrollbars="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<!--<ScrollView android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:background="#FFFFFF"-->
+<!--    android:scrollbars="vertical"-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android">-->
     <LinearLayout android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -12,13 +12,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:scrollbars="vertical"
-            android:layout_height="200dp">
+            android:layout_marginTop="20dp"
+            android:layout_height="150dp">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FragmentDialogUpdateMenuDrink_recycleMenuDrink"
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
         android:scrollbars="vertical"
-        android:layout_height="200dp">
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
     </androidx.recyclerview.widget.RecyclerView>
         </ScrollView>
     <LinearLayout android:layout_width="match_parent"
@@ -78,6 +79,8 @@
                 android:text="Cập nhật"
                 android:textSize="13sp"
                 android:textAllCaps="false"
+                android:background="@drawable/custome_button_dathang"
+                android:textColor="#FFFFFF"
                 android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp" />
@@ -85,6 +88,8 @@
                 android:id="@+id/FragmentDialogUpdateMenuDrink_btnCancel"
                 android:text="Hủy"
                 android:textAllCaps="false"
+                android:background="@drawable/custome_button_dathang"
+                android:textColor="#FFFFFF"
                 android:layout_height="50dp"
                 android:layout_width="wrap_content"
                 android:layout_marginRight="20dp"
@@ -94,4 +99,4 @@
 
     </LinearLayout>
     </LinearLayout>
-</ScrollView>
+<!--</ScrollView>-->

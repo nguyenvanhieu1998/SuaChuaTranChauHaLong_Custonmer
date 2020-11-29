@@ -64,8 +64,31 @@ public class Fragment_Point extends Fragment implements ListenerIdFragmentPoint 
         checkAdmin();
         initData();
         addEvents();
+        initPoint();
         return convertiew;
     }
+    private void initPoint()
+    {
+        holder.seekBarPoint.setEnabled(false);
+        databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int seek = Integer.parseInt(snapshot.child("point").getValue().toString());
+                holder.txtPoint.setText(""+seek);
+                holder.seekBarPoint.setProgress(seek);
+              //  holder.seekBarPoint.
+                holder.seekBarPoint.getProgress();
+                //holder.seekBarPoint.setActivated(false);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
   //  Intent intent;
     @Override
     public void onItemClick(FragmentPoint fragmentPoint) {
@@ -121,7 +144,9 @@ public class Fragment_Point extends Fragment implements ListenerIdFragmentPoint 
         holder = new ViewHolder();
         holder.linearContent = (LinearLayout) convertiew.findViewById(R.id.FragmentPoint_frameContent);
         holder.txtThongBao = (TextView) convertiew.findViewById(R.id.FragmentPoint_txtThongBao);
+        holder.txtPoint = (TextView)  convertiew.findViewById(R.id.FragmentPoint_txtPoint);
         holder.recyclerViewFragmentPoint = (RecyclerView) convertiew.findViewById(R.id.FragmentPoint_recycleViewPoint);
+        holder.seekBarPoint = (SeekBar)  convertiew.findViewById(R.id.FragmentPoint_seekbarPoint);
         convertiew.setTag(holder);
     }
     private void initData()

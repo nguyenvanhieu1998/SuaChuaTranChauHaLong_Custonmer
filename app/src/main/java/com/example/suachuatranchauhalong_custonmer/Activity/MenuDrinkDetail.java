@@ -1,5 +1,6 @@
 package com.example.suachuatranchauhalong_custonmer.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,12 +8,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +41,7 @@ import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialog
 import com.example.suachuatranchauhalong_custonmer.InterfaceOnClick.UpdateAndHiddenDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.Drink;
+import com.example.suachuatranchauhalong_custonmer.Object.ListenerCheckAdmin;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerIDMenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerIdDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
@@ -51,7 +62,7 @@ import java.util.ArrayList;
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
 public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickListener, UpdateAndHiddenDrink {
-    SearchView searchViewDrink;
+    EditText searchViewDrink;
     ImageView imgBackActivity,imgAddDrink;
     RecyclerView recyclerViewDrink;
     DrinkAdapter drinkAdapter;
@@ -66,6 +77,7 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
     ListenerIDMenuDrink listenerIDMenuDrink;
     LinearLayout linearCart;
     FrameLayout frameLine;
+    Animation FadeIn, FadeOut, SlideUp, SlideDown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,30 +93,206 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
         getNameMenuDrink();
         checkAdmin();
         setDataCart();
+        Search2();
+             //  searchViewDrink.setFocusable(true);
+
         //setDataCart2();
     }
-
+    boolean check = false;
     private void addEvents() {
        btnPay.setOnClickListener(this);
-       imgAddDrink.setOnClickListener(this);
+      // imgAddDrink.setOnClickListener(this);
         linearCart.setOnClickListener(this);
+    }
+    ListenerCheckAdmin listenerCheckAdmin;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(listenerCheckAdmin.getCheck()==1)
+        {
+            getMenuInflater().inflate(R.menu.menu_add, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_add:
+               // addDrink();
+                listenerIDMenuDrink = new ListenerIDMenuDrink();
+                 listenerIDMenuDrink.setIdMenuDrink(intent.getStringExtra("IDMenuDrink"));
+                 addDrink();
+                 Toast.makeText(this, "Bạn đã chọn thêm 1 đồ uống", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void addControls() {
+        SlideUp = AnimationUtils.loadAnimation(MenuDrinkDetail.this, R.anim.slide_up);
+        FadeIn = AnimationUtils.loadAnimation(MenuDrinkDetail.this, R.anim.fade_in);
+        FadeOut = AnimationUtils.loadAnimation(MenuDrinkDetail.this, R.anim.fade_out);
+        SlideDown = AnimationUtils.loadAnimation(MenuDrinkDetail.this, R.anim.slide_down);
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityMenuDrink_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        searchViewDrink = (SearchView) findViewById(R.id.ActivityMenuDrinkDetail_searchDrink);
-        txtTittle = (TextView) findViewById(R.id.ActivityMenuDrinkDetail_txtTittle);
+        searchViewDrink = (EditText) findViewById(R.id.ActivityMenuDrinkDetail_searchDrink);
+        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+     //   searchViewDrink.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        //txtTittle = (TextView) findViewById(R.id.ActivityMenuDrinkDetail_txtTittle);
         txtMountOfOrder = (TextView) findViewById(R.id.ActivityMenuDrinkDetail_txtMountOfOrder);
         txtPriceOfOrder = (TextView) findViewById(R.id.ActivityMenuDrinkDetail_txtPriceOfOrder);
         recyclerViewDrink = (RecyclerView) findViewById(R.id.ActivityMenuDrinkDetail_recycleViewDrink);
         btnPay = (Button) findViewById(R.id.ActivityMenuDrinkDetail_btnPay);
-        imgAddDrink = (ImageView) findViewById(R.id.ActivityMenuDrinkDetail_imgAddDrink);
+        //imgAddDrink = (ImageView) findViewById(R.id.ActivityMenuDrinkDetail_imgAddDrink);
         linearCart = (LinearLayout) findViewById(R.id.ActivityMenuDrinkDetail_linearCart);
         frameLine = (FrameLayout) findViewById(R.id.ActivityMenuDrinkDetail_line);
     }
+
+    private void Search2()
+    {
+        final ArrayList<Drink> drinkFillterArrayList = new ArrayList<>();
+        final  DrinkAdapter drinkFillterAdapter = new DrinkAdapter(this,drinkFillterArrayList,this);
+        final  DrinkAdapter drinkAdapter2 = new DrinkAdapter(this,arrayListDrink,this);
+        recyclerViewDrink.setAdapter(drinkFillterAdapter);
+        if(searchViewDrink.getText().toString().isEmpty())
+        {
+            // baiDangAdapter = new Custom_Dong_BaiDang_Adapter(R.layout.custom_dong_baidang,getActivity(),baiDangArrayList);
+            recyclerViewDrink.setAdapter(drinkAdapter);
+            drinkAdapter.notifyDataSetChanged();
+        }
+        searchViewDrink.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                drinkFillterArrayList.clear();
+               // Toast.makeText(MenuDrinkDetail.this, "" + searchViewDrink.getText().toString().toLowerCase().trim(), Toast.LENGTH_SHORT).show();
+             //   final String getStringSearch = searchViewDrink.getText().toString().toLowerCase().trim();
+                if(!searchViewDrink.getText().toString().trim().isEmpty())
+                {
+                    recyclerViewDrink.setAdapter(drinkFillterAdapter);
+                        for (Drink drink1 : drinkFull)
+                        {
+
+                                String s2 = searchViewDrink.getText().toString().toLowerCase().trim();
+                                String ten = drink1.getNameDrink();
+                                ten = ten.toLowerCase();
+                                Log.e("Search", "chuoi1 :" + s2 + "chuoi2 :" + ten);
+                                if(ten.contains(s2)){
+                                    Log.e("Search", "chuoi3 :" + s2 + "chuoi4 :" + ten);
+                                    drinkFillterArrayList.add(drink1);
+
+                                                }
+                }
+                    drinkFillterAdapter.notifyDataSetChanged();
+                  //  recyclerViewDrink.setAdapter(drinkFillterAdapter);
+                }
+                else
+                {
+                    recyclerViewDrink.setAdapter(drinkAdapter2);
+                    drinkAdapter2.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+     ArrayList<Drink> drinkFillterArrayList2;
+    static ArrayList<Drink> drinkFull = new ArrayList<>();
+//    private void Search()
+//    {
+//        final ArrayList<Drink> drinkFillterArrayList = new ArrayList<>();
+//        final  DrinkAdapter drinkFillterAdapter = new DrinkAdapter(this,drinkFillterArrayList,this);
+//        final  DrinkAdapter drinkAdapter2 = new DrinkAdapter(this,arrayListDrink,this);
+//        recyclerViewDrink.setAdapter(drinkFillterAdapter);
+//        if(searchViewDrink.getText().toString().isEmpty())
+//        {
+//            // baiDangAdapter = new Custom_Dong_BaiDang_Adapter(R.layout.custom_dong_baidang,getActivity(),baiDangArrayList);
+//            recyclerViewDrink.setAdapter(drinkAdapter);
+//            drinkAdapter2.notifyDataSetChanged();
+//        }
+//        searchViewDrink.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                // Log.e("Search", "chuoi :" + s);
+//                // Toast.makeText(getActivity(), "" + edtSearch.getText().toString(), Toast.LENGTH_SHORT).show();
+//                // Search();
+//               // drinkFillterAdapter = new DrinkAdapter(MenuDrinkDetail.this,drinkFillterArrayList,this);
+//                drinkFillterArrayList2 = new ArrayList<>();
+//                if(! searchViewDrink.getText().toString().trim().isEmpty())
+//                {
+//                    databaseReference.child("ListDrink").addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            drinkFillterArrayList.clear();
+//                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+//                            {
+//                               Drink drink = dataSnapshot1.getValue(Drink.class);
+//                               if(drink.getIdMenuDrink().equals(intent.getStringExtra("idMenuDrink").toString()))
+//                               {
+//                                   drinkFillterArrayList2.add(drink);
+//
+//                                   for (Drink drink1 : drinkFillterArrayList2)
+//                                   {
+//                                       if(drink1.getStatus()==1)
+//                                       {
+//                                           final String getStringSearch = searchViewDrink.getText().toString().toLowerCase().trim();
+//                                           String ten = drink1.getNameDrink();
+//                                           ten = ten.toLowerCase();
+//                                           Log.e("Search", "chuoi1 :" + getStringSearch + "chuoi2 :" + ten);
+//                                           if(ten.contains(getStringSearch)){
+//                                               Log.e("Search", "chuoi3 :" + getStringSearch + "chuoi4 :" + ten);
+//                                               drinkFillterArrayList.add(drink1);
+////                                           Log.e("size arraylist fillte ","" + drinkFillterArrayList.size());
+////                                           Log.e(" arraylist  ","" +drinkFillterArrayList.get(0) + " - " + drinkFillterArrayList.get(1));
+//                                           }
+//
+//                                       }
+//                                   }
+//
+//                               }
+//                                 //   baiDang bd = dataSnapshot2.getValue(baiDang.class);
+//
+//                            }
+//
+//                            drinkFillterAdapter.notifyDataSetChanged();
+//                           // recyclerViewDrink.setAdapter(drinkFillterAdapter);
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
+//                else
+//                {
+//                    recyclerViewDrink.setAdapter(drinkAdapter);
+//                    drinkAdapter.notifyDataSetChanged();
+//                }
+//            }
+//        });
+//    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -116,6 +304,7 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
         firebaseUser = firebaseAuth.getCurrentUser();
         intent = getIntent();
         listenerIdDrink = new ListenerIdDrink();
+        listenerCheckAdmin = new ListenerCheckAdmin();
        // Toast.makeText(this, "" + intent.getStringExtra("IDMenuDrink"), Toast.LENGTH_SHORT).show();
     }
      float totalPriceOrder=0;
@@ -216,7 +405,7 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                      MenuDrink menuDrink = dataSnapshot.getValue(MenuDrink.class);
-                     txtTittle.setText(menuDrink.getNameMenuDrink().toString());
+                   //  txtTittle.setText(menuDrink.getNameMenuDrink().toString());
                      toolbar.setTitle(menuDrink.getNameMenuDrink().toString());
             }
 
@@ -233,15 +422,20 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
                 Customer customer = dataSnapshot.getValue(Customer.class);
                 if(customer.getPermission().equals("admin"))
                 {
-                    imgAddDrink.setVisibility(View.VISIBLE);
-                    linearCart.setVisibility(View.INVISIBLE);
-                    frameLine.setVisibility(View.INVISIBLE);
+//                    imgAddDrink.setVisibility(View.GONE);
+                    linearCart.setVisibility(View.GONE);
+                    frameLine.setVisibility(View.GONE);
                     //btnUpdate.setVisibility(View.VISIBLE);
 //                    txtName.setText(mb.getName());
 //                    Picasso.with(TrangChuActivity.this).load(mb.getPhotoURL()).into(imgAdmin);
 //                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
+//                if(customer.getPermission().equals("customer"))
+//                {
+//                    linearCart.setVisibility(View.VISIBLE);
+//                    frameLine.setVisibility(View.VISIBLE);
+//                }
             }
 
             @Override
@@ -266,6 +460,8 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
                         if(drink.getStatus()==1)
                         {
                             arrayListDrink.add(drink);
+                            drinkFull = arrayListDrink;
+
                         }
 
                     }
@@ -273,6 +469,8 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
                     //    Toast.makeText(getActivity() , ""+  name, Toast.LENGTH_SHORT).show();
 
                 }
+                Log.e("size arraylist 1",""+ arrayListDrink.size());
+                Log.e("size arraylist 2",""+ drinkFull.size());
                 drinkAdapter.notifyDataSetChanged();
 
             }
@@ -314,12 +512,12 @@ public class MenuDrinkDetail extends AppCompatActivity implements View.OnClickLi
 
                 // Toast.makeText(this, "Bạn đã chọn thanh toán", Toast.LENGTH_SHORT).show();
                  break;
-             case R.id.ActivityMenuDrinkDetail_imgAddDrink :
-                 listenerIDMenuDrink = new ListenerIDMenuDrink();
-                 listenerIDMenuDrink.setIdMenuDrink(intent.getStringExtra("IDMenuDrink"));
-                 addDrink();
-                 Toast.makeText(this, "Bạn đã chọn thêm 1 đồ uống", Toast.LENGTH_SHORT).show();
-                 break;
+//             case R.id.ActivityMenuDrinkDetail_imgAddDrink :
+//                 listenerIDMenuDrink = new ListenerIDMenuDrink();
+//                 listenerIDMenuDrink.setIdMenuDrink(intent.getStringExtra("IDMenuDrink"));
+//                 addDrink();
+//                 Toast.makeText(this, "Bạn đã chọn thêm 1 đồ uống", Toast.LENGTH_SHORT).show();
+//                 break;
              case R.id.ActivityMenuDrinkDetail_linearCart :
 //                 FragmentDialogUpdateDrinkOfCart fragmentDialogUpdateDrinkOfCart = new FragmentDialogUpdateDrinkOfCart();
 //                 fragmentDialogUpdateDrinkOfCart.show(getSupportFragmentManager(),"fragmentDialogUpdateDrinkOfCart");

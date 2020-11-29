@@ -1,8 +1,18 @@
 <LinearLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="10"
+    android:background="#FFFFFF"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ActivityInformation_toolbar"
+        android:layout_width="match_parent"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextColor="#FFFFFF"
+        android:background="#0923B1"
+        android:layout_height="?actionBarSize">
+    </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_weight="2.8"
         android:layout_margin="10dp"
@@ -156,8 +166,9 @@
         android:id="@+id/ActivityInformationUserCurrent_btnUpdate"
         android:text="Cập nhật"
         android:layout_weight="1"
+        android:background="@drawable/custome_button_dathang"
+        android:textColor="#FFFFFF"
         android:layout_gravity="center_horizontal"
-        android:textColor="#070707"
         android:layout_width="300dp"
         android:layout_height="0dp">
     </Button>

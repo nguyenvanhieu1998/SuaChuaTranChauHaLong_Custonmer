@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder> {
     private List<Customer> listCustomer;
     private Context context;
@@ -53,7 +55,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         {
             holder.txtSexCustomer.setText("Giới tính : Nữ");
         }
-        holder.txtOrderOfCustomer.setText("Đã mua : "+ customer.getMountOrder());
+     //   holder.txtOrderOfCustomer.setText("Đã mua : "+ customer.getMountOrder());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,14 +70,14 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgCustomer;
+        CircleImageView imgCustomer;
         TextView txtNameCustomer,txtSexCustomer,txtOrderOfCustomer;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgCustomer = (ImageView) itemView.findViewById(R.id.itemCustomer_imageCustomer);
+            imgCustomer = (CircleImageView) itemView.findViewById(R.id.itemCustomer_imageCustomer);
             txtSexCustomer = (TextView) itemView.findViewById(R.id.itemCustomer_txtSexCustomer);
             txtNameCustomer = (TextView) itemView.findViewById(R.id.itemCustomer_txtNameCustomer);
-            txtOrderOfCustomer = (TextView) itemView.findViewById(R.id.itemCustomer_txtOrderOfCustomer);
+          //  txtOrderOfCustomer = (TextView) itemView.findViewById(R.id.itemCustomer_txtOrderOfCustomer);
         }
     }
 }

@@ -100,7 +100,37 @@ public class Fragment_Account extends Fragment implements ListenerIdFragmentAcco
         //checkAdmin();
         setUserCurrent();
         addEvents();
+        initPoint();
         return convertiew;
+    }
+    private void initPoint()
+    {
+        databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int seek = Integer.parseInt(snapshot.child("point").getValue().toString());
+                holder.txtPointUserCurrent.setText(""+seek);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    databaseReference.child("ListOrder").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            holder.txtMountOrderUserCurrent.setText(""+snapshot.getChildrenCount());
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    });
+
     }
     private void initReferenceObject()
     {
@@ -118,11 +148,11 @@ public class Fragment_Account extends Fragment implements ListenerIdFragmentAcco
             intent = new Intent(getActivity(), InformationUserCurrent.class);
             startActivity(intent);
         }
-        if(fragmentAccount.getId()==2)
-        {
-            intent = new Intent(getActivity(), OrderCurrentOfCustomer.class);
-            startActivity(intent);
-        }
+//        if(fragmentAccount.getId()==2)
+//        {
+//            intent = new Intent(getActivity(), OrderCurrentOfCustomer.class);
+//            startActivity(intent);
+//        }
         if(fragmentAccount.getId()==3)
         {
             intent = new Intent(getActivity(), ListOrderOfCustomerCurrent.class);
@@ -217,7 +247,7 @@ public class Fragment_Account extends Fragment implements ListenerIdFragmentAcco
     {
         fragmentAccountArrayList = new ArrayList<>();
         fragmentAccountArrayList.add(new FragmentAccount(1 ,R.drawable.ic_baseline_person_24_fragmentaccount,"Thông tin cá nhân",R.drawable.ic_baseline_navigate_next_24));
-        fragmentAccountArrayList.add(new FragmentAccount(2,R.drawable.ic_baseline_motorcycle_24,"Đơn hàng hiện tại",R.drawable.ic_baseline_navigate_next_24));
+      //  fragmentAccountArrayList.add(new FragmentAccount(2,R.drawable.ic_baseline_motorcycle_24,"Đơn hàng hiện tại",R.drawable.ic_baseline_navigate_next_24));
         fragmentAccountArrayList.add(new FragmentAccount(3,R.drawable.ic_baseline_local_shipping_24,"Đơn hàng của tôi",R.drawable.ic_baseline_navigate_next_24));
         fragmentAccountArrayList.add(new FragmentAccount(4 ,R.drawable.ic_baseline_lock_24_fragmentaccount,"Đổi mật khẩu",R.drawable.ic_baseline_navigate_next_24));
       //  fragmentAccountArrayList.add(new FragmentAccount(5 ,R.drawable.ic_baseline_info_24_fragmentaccount,"Chính sách hỗ trợ",R.drawable.ic_baseline_navigate_next_24));

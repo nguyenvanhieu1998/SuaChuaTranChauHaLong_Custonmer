@@ -10,7 +10,7 @@
         <item
             android:id="@+id/NavigationView_ChooseinformationShipper"
             android:title="Danh sách shipper"
-           android:icon="@drawable/ic_baseline_two_wheeler_24"
+            android:icon="@drawable/ic_baseline_directions_bike_24"
             android:checkable="false">
         </item>
         <item
@@ -28,7 +28,7 @@
         <item
             android:id="@+id/NavigationView_ChooseOrderConfirmed"
             android:title="Danh sách đơn hàng"
-            android:icon="@drawable/ic_baseline_check_circle_outline_24"
+            android:icon="@drawable/ic_baseline_local_shipping_24_1111"
             android:checkable="false">
         </item>
 <!--        <item-->
@@ -40,7 +40,14 @@
         <item
             android:id="@+id/NavigationView_ChooseOrderStatistical"
             android:title="Thống kê đơn hàng"
-            android:icon="@drawable/ic_baseline_check_circle_outline_24"
+            android:icon="@drawable/ic_baseline_list_alt_24"
+            android:checkable="false">
+        </item>
+        <item
+            android:id="@+id/NavigationView_ChooseThongKeDoanhThu"
+            android:title="Thống kê doanh thu"
+            android:visible="false"
+            android:icon="@drawable/ic_baseline_euro_24"
             android:checkable="false">
         </item>
         <item

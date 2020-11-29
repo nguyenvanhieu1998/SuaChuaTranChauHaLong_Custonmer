@@ -1,6 +1,7 @@
 package com.example.suachuatranchauhalong_custonmer.FragmentDialog;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -188,13 +189,21 @@ public class FragmentDialogUpdateDrinkForAdmin extends DialogFragment implements
         {
             Toast.makeText(getActivity(), "Bạn đã không thay đổi thông tin gì", Toast.LENGTH_SHORT).show();
         }
+        else if( Float.parseFloat(edtPriceDrink.getText().toString().trim())>50000)
+        {
+            Toast.makeText(getActivity(), "Giá đồ uống tối đa là 50.000đ", Toast.LENGTH_SHORT).show();
+        }
         else
         {
             updateDrinkToFirebase();
         }
     }
     String photoURL = "";
+    ProgressDialog progressDialog;
     private void updateDrinkToFirebase() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Cập nhật....");
+        progressDialog.show();
         final StorageReference mountainsRef = mStorageRef.child("Drink").child(listenerIdDrink.getIdDrink()+".png");
         StorageReference mountainImagesRef = mStorageRef.child("images/" + listenerIdDrink.getIdDrink() + ".png\"");
         mountainsRef.getName().equals(mountainImagesRef.getName());    // true
@@ -223,6 +232,7 @@ public class FragmentDialogUpdateDrinkForAdmin extends DialogFragment implements
                         databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("nameDrink").setValue(edtNameDrink.getText().toString().trim());
                         databaseReference.child("ListDrink").child(listenerIdDrink.getIdDrink()).child("priceDrink").setValue(Float.parseFloat(edtPriceDrink.getText().toString().trim()));
                         Toast.makeText(getActivity(), "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                         dialog.dismiss();
                     }
                 });

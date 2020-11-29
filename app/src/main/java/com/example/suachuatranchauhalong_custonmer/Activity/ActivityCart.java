@@ -30,16 +30,21 @@ import android.widget.Toast;
 
 import com.example.suachuatranchauhalong_custonmer.Adapter.DetailOrderAdapter;
 import com.example.suachuatranchauhalong_custonmer.Adapter.FragmentUpdateDrinkOfCart_OrderDetailAdapter;
+import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogHiddenMenuDrinkForAdmin;
+import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogListVoucherOfCart;
 import com.example.suachuatranchauhalong_custonmer.FragmentDialog.FragmentDialogUpdateDrinkOfCart;
 import com.example.suachuatranchauhalong_custonmer.InterfaceOnClick.OnItemClickListener;
 import com.example.suachuatranchauhalong_custonmer.Object.Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.Drink;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerIdOrderDetail;
+import com.example.suachuatranchauhalong_custonmer.Object.ListenerIdVoucher;
+import com.example.suachuatranchauhalong_custonmer.Object.ListenerPriceOrderOfCart;
 import com.example.suachuatranchauhalong_custonmer.Object.MenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.Order;
 import com.example.suachuatranchauhalong_custonmer.Object.OrderDetail;
 import com.example.suachuatranchauhalong_custonmer.Object.OrderDetail2;
 import com.example.suachuatranchauhalong_custonmer.Object.Shipper;
+import com.example.suachuatranchauhalong_custonmer.Object.Voucher;
 import com.example.suachuatranchauhalong_custonmer.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,7 +62,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class ActivityCart extends AppCompatActivity implements OnItemClickListener {
+public class ActivityCart extends AppCompatActivity implements OnItemClickListener,ListenerIdVoucher {
     DatabaseReference databaseReference;
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
@@ -72,7 +77,10 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
     Location location;
     LocationManager locationManager;
     String diaChi = "";
-
+    ValueEventListener valueEventListener;
+    ListenerPriceOrderOfCart listenerPriceOrderOfCart;
+    double lat = 20.985045682596606;
+    double log = 105.83865921205458;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +88,18 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         initReferenceObject();
         addControls();
         checkPermission();
+        getPricePromotion();
         //InitAddress();
         InitAddress();
         addEvents();
        getAllDataInOrder();
 
     }
+
+//    public ActivityCart(float khuyenMaiiiii)
+//    {
+//          khuyenMai = khuyenMaiiiii;
+//    }
 
     private void checkPermission() {
 
@@ -97,12 +111,48 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
     }
-
+    static int chekckk;
     private void addEvents() {
+        databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).child("ListVoucher").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists())
+                {
+                    chekckk=0;
+
+                }
+                else
+                {
+                    chekckk=1;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         btnDatHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogDatHang();
+            }
+        });
+        btnApDungVoucher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(chekckk==0)
+                {
+                    Toast.makeText(ActivityCart.this, "Bạn hiện tại không có voucher nào", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+
+                    FragmentDialogListVoucherOfCart fragmentDialogListVoucherOfCart = new FragmentDialogListVoucherOfCart();
+                    fragmentDialogListVoucherOfCart.show(getSupportFragmentManager(),"fragmentDialogListVoucherOfCart");
+                }
+
             }
         });
     }
@@ -191,13 +241,14 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         a.show();
     }
 
-    String key_order;
+   // String key_order;20.985045682596606, 105.83865921205458
+
     private void updateIdOrder() {
         final String dateOrder;
         Calendar calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        dateOrder = "Thời gian : " + simpleDateFormat.format(calen.getTime());
-        key_order = databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).push().getKey();
+        dateOrder =  simpleDateFormat.format(calen.getTime());
+      final  String key_order = databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).push().getKey();
         Order order = new Order(key_order, firebaseUser.getUid().toString(),
                 mount, price, khuyenMai, phiVanChuyen, totalThanhToan, dateOrder,
                 1, false, 1);
@@ -208,20 +259,28 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
                     if (orderDetail.getIdOrder().toString().equals("")) {
-                        //    Drink drink = dataSnapshot.getValue(Drink.class);
+                        try {
                             databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
                                     child(orderDetail.getIdOrderDetail()).child("idOrder").setValue(key_order);
-                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(location.getLatitude() + "");
-                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(location.getLongitude() + "");
-//                                totalPriceOrder += drink.getPriceDrink()*orderDetail.getMount();
-//                                txtPriceOfOrder.setText(""+totalPriceOrder);
+
+//                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(location.getLatitude() + "");
+//                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(location.getLongitude() + "");
+//
+                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("latitude").setValue(lat);
+                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).child(key_order).child("Location").child("longitude").setValue(log);
+
                             databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
                                     child(key_order).child("ListOrderDetail").
                                     child(orderDetail.getIdOrderDetail()).setValue(orderDetail);
 
-                        databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
-                                child(key_order).child("ListOrderDetail").
-                                child(orderDetail.getIdOrderDetail()).child("idOrder").setValue(key_order);
+                            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
+                                    child(key_order).child("ListOrderDetail").
+                                    child(orderDetail.getIdOrderDetail()).child("idOrder").setValue(key_order);
+                        }catch (NullPointerException ex){
+
+                        }
+                        //    Drink drink = dataSnapshot.getValue(Drink.class);
+
                     }
 
                 }
@@ -233,35 +292,12 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
 
             }
         });
-//        databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                    OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
-//                    if (orderDetail.getIdOrder().toString().equals(key_order)) {
-//
-//                        //    Drink drink = dataSnapshot.getValue(Drink.class);
-//                        databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
-//                                child(key_order).child("ListOrderDetail").
-//                                child(orderDetail.getIdOrderDetail()).setValue(orderDetail);
-////                                totalPriceOrder += drink.getPriceDrink()*orderDetail.getMount();
-////                                txtPriceOfOrder.setText(""+totalPriceOrder);
-//
-//                    }
-//
-//                }
-//                //    detailOrderAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+
         finish();
-        Intent intent = new Intent(this, OrderCurrentOfCustomer.class);
-        //    intent.putExtra("idOrder",key_order);
+        Intent intent = new Intent(this, OrderDetailOfCustomer.class);
+        intent.putExtra("idOrder",key_order);
         startActivity(intent);
+       // overridePendingTransition(R.anim.anim_intent_trai_sang_phai,R.anim.anim_intent_exit);
 
     }
 //    private void updateIdOrder2() {
@@ -274,61 +310,85 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
 //                mount, price, khuyenMai, phiVanChuyen, totalThanhToan, dateOrder,
 //                1, false, 1);
 //        databaseReference.child("ListOrder").child(key_order).setValue(order);
-//        databaseReference.child("ListOrderDetail").addValueEventListener(new ValueEventListener() {
+//        valueEventListener = new ValueEventListener() {
 //            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                try {
-//                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                        OrderDetail2 orderDetail2 = dataSnapshot1.getValue(OrderDetail2.class);
-//                        if (orderDetail2.getIdOrder().toString().equals("")) {
+//                    for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+//                        OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
+//                        if (orderDetail.getIdOrder().toString().equals("")) {
 //                            //    Drink drink = dataSnapshot.getValue(Drink.class);
 //                            databaseReference.child("ListOrderDetail").
-//                                    child(orderDetail2.getIdOrderDetail()).child("idOrder").setValue(key_order);
+//                                    child(orderDetail.getIdOrderDetail()).child("idOrder").setValue(key_order);
+//
 //                            databaseReference.child("ListOrder").child(key_order).child("Location").child("latitude").setValue(location.getLatitude() + "");
 //                            databaseReference.child("ListOrder").child(key_order).child("Location").child("longitude").setValue(location.getLongitude() + "");
 ////                                totalPriceOrder += drink.getPriceDrink()*orderDetail.getMount();
 ////                                txtPriceOfOrder.setText(""+totalPriceOrder);
 //                            databaseReference.child("ListOrder").
 //                                    child(key_order).child("ListOrderDetail").
-//                                    child(orderDetail2.getIdOrderDetail()).setValue(orderDetail2);
-//
-////                        databaseReference.child("ListOrder").
-////                                child(key_order).child("ListOrderDetail").
-////                                child(orderDetail.getIdOrderDetail()).child("idOrder").setValue(key_order);
+//                                    child(orderDetail.getIdOrderDetail()).setValue(orderDetail);
 //                        }
 //
 //                    }
 //                }catch (NullPointerException ex){
 //
 //                }
-//
-//                //    detailOrderAdapter.notifyDataSetChanged();
 //            }
 //
 //            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            public void onCancelled(@NonNull DatabaseError error) {
 //
 //            }
-//        });
+//        };
+//        databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(valueEventListener);
+////
+////
+////        databaseReference.child("ListOrderDetail").addValueEventListener(new ValueEventListener() {
+////            @Override
+////            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+////
+////
+////                //    detailOrderAdapter.notifyDataSetChanged();
+////            }
+////
+////            @Override
+////            public void onCancelled(@NonNull DatabaseError databaseError) {
+////
+////            }
+////        });
+//       // finish();
 //        Intent intent = new Intent(this, OrderCurrentOfCustomer.class);
 //        //    intent.putExtra("idOrder",key_order);
 //        startActivity(intent);
 //
 //    }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            databaseReference = null;
+        }catch (NullPointerException ex){
+
+        }
+        super.onDestroy();
+    }
+
     private void initReferenceObject() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
         intent = getIntent();
+        listenerPriceOrderOfCart = new ListenerPriceOrderOfCart();
     }
-
+    Button btnApDungVoucher;
     private void addControls() {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityAddCart_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Giỏ hàng");
+        btnApDungVoucher = (Button) findViewById(R.id.ActivityCart_btnApDungVoucher);
         recyclerViewDrinkOfOrderDetail = (RecyclerView) findViewById(R.id.ActivityCart_recyclerDrink);
         // txtIDBill = (TextView) findViewById(R.id.ActivityOrderDetailShipper_txtBill);
         txtStatusThanhToan = (TextView) findViewById(R.id.ActivityCart_txtThanhToan);
@@ -366,8 +426,36 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         double d = R * c;
         return d;
     }
+   static int giaTriKhuyenMai;
+    private void getPricePromotion()
+    {
+        databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    final OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
+                    if (orderDetail.getIdOrder().toString().equals("")) {
+                        try {
+                            giaTriKhuyenMai = Integer.parseInt(dataSnapshot1.child("pricePromotion").getValue().toString());
+                        }catch (NullPointerException ex)
+                        {
 
+                        }
+
+                    }
+
+                }
+                //     khuyenMai = listenerPriceOrderOfCart.getGiaTriKhuyenMai();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     private void getAllDataInOrder() {
+
 //         mount = Integer.parseInt(intent.getStringExtra("Mount"));
 //         price  = Float.parseFloat(intent.getStringExtra("Price"));
         phiVanChuyen = (int) distanceBetween2Points(21.009550515590462, 105.82018764110443,location.getLatitude(),location.getLongitude())*7000;
@@ -415,9 +503,12 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
                     }
 
                 }
+                khuyenMai = (price*giaTriKhuyenMai)/100;
+                txtKhuyenMai.setText("Khuyến mãi : " + khuyenMai);
                 txtMount.setText("Số lượng : " + mount);
                 txtThanhToan.setText("Thanh toán : " + price);
-                totalThanhToan = price + phiVanChuyen + khuyenMai;
+                listenerPriceOrderOfCart.setPriceOrder(price);
+                totalThanhToan = price + phiVanChuyen - khuyenMai;
                 txtTotalThanhToan.setText("Tổng thanh toán : " + totalThanhToan);
                 detailOrderAdapter.notifyDataSetChanged();
             }
@@ -435,6 +526,19 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
         recyclerViewDrinkOfOrderDetail.setAdapter(detailOrderAdapter);
         recyclerViewDrinkOfOrderDetail.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recyclerViewDrinkOfOrderDetail.setLayoutManager(new LinearLayoutManager(this));
+    }
+    public void setPricePromotion(float pricePromotion)
+    {
+        txtKhuyenMai = (TextView) findViewById(R.id.ActivityCart_txtKhuyenMai);
+        khuyenMai = (price*pricePromotion)/100;
+        khuyenMai = listenerPriceOrderOfCart.getGiaTriKhuyenMai();
+        txtKhuyenMai.setText("Khuyến mãi : "+khuyenMai);
+    }
+
+    @Override
+    protected void onResume() {
+        khuyenMai = listenerPriceOrderOfCart.getGiaTriKhuyenMai();
+        super.onResume();
     }
 
     private void getListOrderDetail() {
@@ -702,12 +806,11 @@ public class ActivityCart extends AppCompatActivity implements OnItemClickListen
 //        fragmentDialogUpdateDrinkOfCart.show(getSupportFragmentManager(),"fragmentDialogUpdateDrinkOfCart");
     }
 
-//    @Override
-//    protected void Destroy() {
-//        databaseReference =null;
-//        super.onPause();
-//    }
 
-
-
+    @Override
+    public void getDataVoucher(Voucher voucher) {
+       // khuyenMai = (price*pricePromotion)/100;
+       // khuyenMai = listenerPriceOrderOfCart.getGiaTriKhuyenMai();
+        txtKhuyenMai.setText("Khuyến mãi : " + voucher.getPricePromotion());
+    }
 }

@@ -78,16 +78,25 @@
         <Button
             android:id="@+id/dialogUpdateVoucher_btnUpdateVoucher"
             android:text="Cập nhật"
+            android:background="@drawable/custome_button_dathang"
+            android:textColor="#FFFFFF"
+            android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Button>
         <Button
             android:id="@+id/dialogUpdateVoucher_btnHiden"
             android:text="Ẩn"
+            android:background="@drawable/custome_button_dathang"
+            android:textColor="#FFFFFF"
+            android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Button>
         <Button
+            android:background="@drawable/custome_button_dathang"
+            android:textColor="#FFFFFF"
+            android:layout_margin="5dp"
             android:id="@+id/dialogUpdateVoucher_btnCancel"
             android:text="Huỷ"
             android:layout_width="wrap_content"

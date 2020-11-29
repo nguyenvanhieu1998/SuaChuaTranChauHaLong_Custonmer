@@ -40,7 +40,7 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
     ImageView imgLocationShipper;
     TextView txtStatusThanhToan,txtStatusOrder,txtMount,txtMaOrder,txtName,txtPhone,txtAddress,txtThanhToan,txtPhiVanChuyen,txtKhuyenMai,txtTotalThanhToan;
     //ImageView imgPhone,imgMessage;
-    Button btnHuyDonHang;
+    Button btnTiepTuc;
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
@@ -69,7 +69,9 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
     }
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        Intent intent = new Intent(OrderDetailOfCustomer.this, ActivityMain_Customer.class);
+        startActivity(intent);
+   //     onBackPressed();
         return true;
     }
     private void checkStatusOrder()
@@ -225,8 +227,8 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
     {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityOrderOfCustomer_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      //  getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Thanh toán");
         recyclerViewDrinkOfOrderDetail = (RecyclerView) findViewById(R.id.ActivityOrderOfCustomer_recyclerDrink);
         txtMaOrder = (TextView) findViewById(R.id.ActivityOrderOfCustomer_txtMaOrder);
@@ -240,7 +242,7 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
         //  imgPhone = (ImageView) findViewById(R.id.ActivityOrderDetailShipper_imgCallPhone);
         //imgMessage = (ImageView) findViewById(R.id.ActivityOrderDetailShipper_imgMessage);
         txtMount = (TextView) findViewById(R.id.ActivityOrderOfCustomer_txtMountDrinkDetail) ;
-        btnHuyDonHang = (Button) findViewById(R.id.ActivityOrderOfCustomer_btnHuyDonHang);
+        btnTiepTuc = (Button) findViewById(R.id.ActivityOrderOfCustomer_btnContinue);
         txtThanhToan = (TextView) findViewById(R.id.ActivityOrderOfCustomer_txtThanhToan);
         txtKhuyenMai = (TextView) findViewById(R.id.ActivityOrderOfCustomer_txtKhuyenMai);
         txtPhiVanChuyen = (TextView) findViewById(R.id.ActivityOrderOfCustomer_txtPhiVanChuyen);
@@ -256,7 +258,7 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
         //  imgMessage.setOnClickListener(this);
         //imgPhone.setOnClickListener(this);
         imgLocationShipper.setOnClickListener(this);
-        btnHuyDonHang.setOnClickListener(this);
+        btnTiepTuc.setOnClickListener(this);
     }
 //    public void sendDataForDetailOrderAdapter()
 //    {
@@ -268,12 +270,14 @@ public class OrderDetailOfCustomer extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId())
         {
-            case R.id.ActivityOrderOfCustomer_btnHuyDonHang :
-                huyDonHang();
+            case R.id.ActivityOrderOfCustomer_btnContinue :
+                Intent intent1 = new Intent(OrderDetailOfCustomer.this,ActivityMain_Customer.class);
+                startActivity(intent1);
+              //  huyDonHang();
                 break;
             case R.id.ActivityOrderOfCustomer_imgLocationShipper :
-                Intent intent = new Intent(OrderDetailOfCustomer.this,FollowOrder.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(OrderDetailOfCustomer.this,FollowOrder.class);
+                startActivity(intent2);
                 break;
         }
 

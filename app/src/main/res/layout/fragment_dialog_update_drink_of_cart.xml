@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             xmlns:android="http://schemas.android.com/apk/res/android">>
             <ImageView
+                android:layout_gravity="center_horizontal"
                 android:id="@+id/FragmentDialogUpdateDrinkOfCart_imgDrink"
                 android:layout_width="100dp"
                 android:src="@color/colorPrimary"
@@ -93,30 +94,39 @@
                 </ImageView>
             </LinearLayout>
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
                 <Button
                     android:id="@+id/FragmentDialogUpdateDrinkOfCart_btnUpdate"
                     android:text="Cập nhật"
                     android:textSize="13sp"
+                    android:layout_margin="5dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/custome_button_dathang"
                     android:textAllCaps="false"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp" />
                 <Button
                     android:id="@+id/FragmentDialogUpdateDrinkOfCart_btnDelete"
                     android:text="Xóa"
+                    android:layout_margin="5dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/custome_button_dathang"
                     android:textAllCaps="false"
                     android:layout_height="50dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:textSize="13sp"
                     android:layout_toRightOf="@+id/FragmentDialogUpdateDrinkOfCart_btnUpdate"/>
                 <Button
                     android:id="@+id/FragmentDialogUpdateDrinkOfCart_btnCancel"
                     android:text="Hủy"
+                    android:layout_margin="5dp"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/custome_button_dathang"
                     android:textAllCaps="false"
                     android:layout_height="50dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:textSize="13sp"
                     android:layout_toRightOf="@+id/FragmentDialogUpdateDrinkOfCart_btnDelete"/>
             </RelativeLayout>

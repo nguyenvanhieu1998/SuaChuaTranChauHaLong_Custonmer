@@ -19,4 +19,28 @@
         android:background="#0923B1"
         android:layout_height="?actionBarSize">
     </androidx.appcompat.widget.Toolbar>
+    <ImageView
+        android:src="@drawable/logo_suachua"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="230dp">
+    </ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Mỗi voucher có 1 giá 1 điểm quy đổi và giá trị hóa đơn áp dụng nhất định. Giá trị voucher chỉ được áp dụng khi khách hàng mua hàng trực tiếp tại cửa hàng. Mỗi đơn hàng chỉ được áp dụng 1 voucher giảm giá.
+"></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:text="Điện thoại : 0967508481"></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:text="Địa chỉ cửa hàng : Số 69 Ngõ 298 Tây Sơn, Đống Đa, Hà Nội"></TextView>
 </LinearLayout>

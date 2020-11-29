@@ -3,16 +3,18 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="horizontal"
+    android:background="#FFFFFF"
     android:layout_marginHorizontal="10dp"
     android:weightSum="10"
+    android:layout_marginVertical="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/itemShipper_imageShipper"
         android:src="@drawable/ic_ship"
         android:layout_width="0dp"
         android:layout_weight="2"
-        android:layout_height="75dp">
-    </ImageView>
+        android:layout_height="65dp">
+    </de.hdodenhof.circleimageview.CircleImageView>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
@@ -35,12 +37,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </TextView>
-        <TextView
-            android:id="@+id/itemShipper_txtOrderOfShipper"
-            android:layout_width="wrap_content"
-            android:text="Đã giao : 15 đơn hàng "
-            android:textSize="14sp"
-            android:layout_height="wrap_content">
-        </TextView>
+<!--        <TextView-->
+<!--            android:id="@+id/itemShipper_txtOrderOfShipper"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:text="Đã giao : 15 đơn hàng "-->
+<!--            android:textSize="14sp"-->
+<!--            android:layout_height="wrap_content">-->
+<!--        </TextView>-->
     </LinearLayout>
 </LinearLayout>

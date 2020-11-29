@@ -78,6 +78,9 @@
                 android:id="@+id/FragmentDialogAddDrink_btnAddDrink"
                 android:text="Thêm đồ uống"
                 android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:paddingHorizontal="10dp"
+                android:background="@drawable/custome_button_dathang"
                 android:textAllCaps="false"
                 android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
@@ -85,6 +88,8 @@
             <Button
                 android:id="@+id/FragmentDialogAddDrink_btnCancel"
                 android:text="Hủy"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/custome_button_dathang"
                 android:textAllCaps="false"
                 android:layout_height="50dp"
                 android:layout_width="wrap_content"

@@ -139,7 +139,7 @@ public class OrderChoXacNhan extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Đơn hàng ");
+        getSupportActionBar().setTitle("Đơn hàng cần xác nhận");
         recyclerViewOrderChoXacNhan = (RecyclerView) findViewById(R.id.ActivityOrderChoXacNhan_recycleViewOrder);
         txtTittle = (TextView) findViewById(R.id.ActivityOrderChoXacNhan_txtTittle);
     }

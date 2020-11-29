@@ -1,5 +1,6 @@
 package com.example.suachuatranchauhalong_custonmer.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -123,11 +124,15 @@ public class SetInformationForUserRegister extends AppCompatActivity implements 
         return sexUserCurrent;
 
     }
+    ProgressDialog progressDialog;
     public void addEvents()
     {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(SetInformationForUserRegister.this);
+                progressDialog.setMessage("Cập nhật....");
+                progressDialog.show();
                 firebaseAuth = FirebaseAuth.getInstance();
                 // user = firebaseAuth.getCurrentUser();
                 user = firebaseAuth.getCurrentUser();
@@ -165,6 +170,7 @@ public class SetInformationForUserRegister extends AppCompatActivity implements 
 
     @Override
     public void onSetInformationUserRegisterSuccess() {
+        progressDialog.dismiss();
         Toast.makeText(this, "Bạn đã cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,ActivityMain_Customer.class);
         startActivity(intent);

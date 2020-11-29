@@ -1,5 +1,6 @@
 package com.example.suachuatranchauhalong_custonmer.FragmentDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -143,7 +144,11 @@ public class FragmentDialogAddNewsForAdmin extends DialogFragment implements Vie
         }
     }
     String photoURL = "";
+    ProgressDialog progressDialog;
     private void addNewsToFirebase() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Đang thêm....");
+        progressDialog.show();
         calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateCreateNews = "" + simpleDateFormat.format(calen.getTime());
@@ -193,11 +198,13 @@ public class FragmentDialogAddNewsForAdmin extends DialogFragment implements Vie
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if(databaseError == null)                        {
                             Toast.makeText(getActivity(), "Bạn đã thêm tin tức thành công", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                             dialog.dismiss();
                         }
                         else
                         {
                             Toast.makeText(getActivity(), "Bạn đã thêm tin tức thất bại", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                             dialog.dismiss();
                             // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
                         }

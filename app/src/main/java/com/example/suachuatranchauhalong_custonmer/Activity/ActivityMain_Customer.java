@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -88,6 +90,14 @@ public class ActivityMain_Customer extends AppCompatActivity {
     }
     ListenerCheckAdmin listenerCheckAdmin;
     private void checkAdmin() {
+//     navigationView.setVisibility(View.GONE);
+//     navigationView.setEnabled(false);
+//     drawerLayout.closeDrawer(GravityCompat.START);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+       // drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
+       // mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+   //  navigationView.set
+
          listenerCheckAdmin = new ListenerCheckAdmin();
                 databaseReference.child("ListCustomer").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -97,13 +107,18 @@ public class ActivityMain_Customer extends AppCompatActivity {
                         {
 //                    txtName.setText(mb.getName());
 //                    Picasso.with(TrangChuActivity.this).load(mb.getPhotoURL()).into(imgAdmin);
+
+                            //check = 1 : admin
+                            //check = 0 : customer
                             listenerCheckAdmin.setCheck(1);
                             navigationView.setVisibility(View.INVISIBLE);
                             drawerLayout.addDrawerListener(actionBarDrawerToggle);
                             actionBarDrawerToggle = new ActionBarDrawerToggle(ActivityMain_Customer.this,drawerLayout,R.string.open,R.string.close);
                             actionBarDrawerToggle.syncState();
                             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                           // drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNDEFINED);
                         }
                         else
                         {
@@ -116,6 +131,7 @@ public class ActivityMain_Customer extends AppCompatActivity {
 
                     }
                 });
+
 
     }
     public void initListDrink()
@@ -159,10 +175,15 @@ public class ActivityMain_Customer extends AppCompatActivity {
      //   getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
         drawerLayout = (DrawerLayout) findViewById(R.id.ActivityMainCustomer_drawerLayout);
-      //  drawerLayout.setVisibility(View.GONE);
         navigationView = (NavigationView) findViewById(R.id.id_NaviView);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.ActivityMainCustomer_bottomNaviViewMenu);
         framMainContent = (FrameLayout) findViewById(R.id.ActivityMainCustomer_frameMainContent);
+     //   drawerLayout.openDrawer(GravityCompat.END);
+//        drawerLayout.closeDrawer(GravityCompat.START);
+//        drawerLayout.closeDrawers();
+//        drawerLayout.
+      //  drawerLayout.setVisibility(View.GONE);
+        //navigationView.setVisibility(View.INVISIBLE);
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -171,6 +192,7 @@ public class ActivityMain_Customer extends AppCompatActivity {
     }
     int check;
     private void addEventsFormAdmin() {
+
                 navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -201,6 +223,9 @@ public class ActivityMain_Customer extends AppCompatActivity {
                                 break;
                             case R.id.NavigationView_ChooseLogout:
                                 check = 8;
+                                break;
+                            case R.id.NavigationView_ChooseThongKeDoanhThu:
+                                check = 9;
                                 break;
                         }
                         if(check == 1 || check==2)
@@ -248,6 +273,12 @@ public class ActivityMain_Customer extends AppCompatActivity {
                         if(check == 8)
                         {
                          DialogLogout();
+                        }
+                        if(check == 9)
+                        {
+                            intent= new Intent(ActivityMain_Customer.this,ActivityThongKeDoanhThu.class);
+                            //    intent.putExtra("key_itemMenu",check);
+                            startActivity(intent);
                         }
                         return true;
                     }

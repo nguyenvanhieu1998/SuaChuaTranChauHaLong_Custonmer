@@ -48,7 +48,7 @@ public class ActivityRedeenPoint extends AppCompatActivity implements VoucherOfC
         initReferenceObject();
         addControls();
         initDataRecycleVoucher();
-
+        getPointUserCurrent();
     }
     private void initReferenceObject()
     {
@@ -108,22 +108,14 @@ public class ActivityRedeenPoint extends AppCompatActivity implements VoucherOfC
         getSupportActionBar().setTitle("Đổi điểm thưởng");
         recyclerViewVoucher = (RecyclerView) findViewById(R.id.ActivityRedeenPoint_recycleViewVoucher);
     }
-    private static int check;
-    private int pointCustomer;
-    @Override
-    public void onItemClickListener(final Voucher voucher) {
+    private static int check=0;
+    private static int pointCustomer;
+    private void getPointUserCurrent()
+    {
         databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Customer customer = snapshot.getValue(Customer.class);
-                if(customer.getPoint()<voucher.getPoint())
-                {
-                    check = 0;
-                   // Toast.makeText(ActivityRedeenPoint.this, "Bạn không đủ điểm", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    check = 1;
-                }
                 pointCustomer = customer.getPoint();
                 Log.d("point1 : " , "" + pointCustomer);
             }
@@ -133,8 +125,33 @@ public class ActivityRedeenPoint extends AppCompatActivity implements VoucherOfC
 
             }
         });
+    }
+    @Override
+    public void onItemClickListener(final Voucher voucher) {
+    //    databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).child("point").
+//        databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Customer customer = snapshot.getValue(Customer.class);
+//                if(customer.getPoint()<voucher.getPoint())
+//                {
+//                    check = 0;
+//                   // Toast.makeText(ActivityRedeenPoint.this, "Bạn không đủ điểm", Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    check = 1;
+//                }
+//                pointCustomer = customer.getPoint();
+//                Log.d("point1 : " , "" + pointCustomer);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
         Log.d("point2 : " , ""+ pointCustomer);
-        if(check==0)
+        if(pointCustomer < voucher.getPoint())
         {
             AlertDialog.Builder alert2 = new AlertDialog.Builder(ActivityRedeenPoint.this);
                     alert2.setTitle("Thông báo");
@@ -149,7 +166,7 @@ public class ActivityRedeenPoint extends AppCompatActivity implements VoucherOfC
                     AlertDialog a = alert2.create();
                     a.show();
         }
-        else if(check==1)
+        else if(pointCustomer >= voucher.getPoint())
         {
             DialogRedeenPoint(voucher,pointCustomer);
         }
@@ -160,13 +177,17 @@ public class ActivityRedeenPoint extends AppCompatActivity implements VoucherOfC
         alert.setTitle("Thông báo");
         alert.setIcon(R.drawable.ic_baseline_info_24);
         alert.setMessage("Bạn có muốn đổi "+voucher.getPoint() +" điểm " +
-                "lấy voucher giảm giá " + voucher.getPricePromotion()+ "đ " +
-                "cho đơn hàng " + voucher.getPriceApply() + " đ " +"không");
+                "lấy voucher giảm giá " + voucher.getPricePromotion()+ "%" +
+                "cho đơn hàng " + voucher.getPriceApply() + " đ " +"không ?");
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).
                         child("ListVoucher").child(voucher.getIdVoucher().toString()).setValue(voucher);
+
+                databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).
+                        child("ListVoucher").child(voucher.getIdVoucher().toString()).child("statusUse").setValue(1);
+
                 databaseReference.child("ListCustomer").child(firebaseUser.getUid().toString()).
                         child("point").setValue(point-voucher.getPoint());
                 Toast.makeText(ActivityRedeenPoint.this, "Đổi điểm thành công", Toast.LENGTH_SHORT).show();

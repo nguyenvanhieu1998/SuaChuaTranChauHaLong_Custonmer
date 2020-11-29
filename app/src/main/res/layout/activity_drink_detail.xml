@@ -208,6 +208,10 @@
             android:id="@+id/ACtivityDrinkDetail_btnTotalMoney"
             android:text="+ 25000đ"
             android:layout_weight="6"
+            android:textStyle="bold"
+            android:background="@drawable/custome_button_dathang"
+            android:textColor="#FFFFFF"
+            android:paddingHorizontal="15dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
         </Button>

@@ -331,8 +331,8 @@ public class OrderCurrentOfCustomer extends AppCompatActivity implements View.On
     {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityOrderCurrentOfCustomer_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     //   getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Đơn hàng hiện tại");
         txtStatusThanhToan = (TextView) findViewById(R.id.ActivityOrderCurrentOfCustomer_txtStatusThanhToan);
         txtThongBao = (TextView) findViewById(R.id.ActivityOrderCurrentOfCustomer_txtThongBao);

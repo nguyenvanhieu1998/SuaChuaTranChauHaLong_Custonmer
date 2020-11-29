@@ -13,13 +13,12 @@ public class Shipper {
     private String driverPlatesShipper;
     private String driverLicenseShipper;
     private String permission;
-    private int mountOrder;
     public Shipper()
     {
 
     }
 
-    public Shipper(String idShipper, String nameShipper, String avtShipperURL, boolean sexShipper, String phoneShipper, String addressShipper, String emailShipper, String nameCarShipper, String colorCarShipper, String driverPlatesShipper, String driverLicenseShipper, String permission,int mountOrder) {
+    public Shipper(String idShipper, String nameShipper, String avtShipperURL, boolean sexShipper, String phoneShipper, String addressShipper, String emailShipper, String nameCarShipper, String colorCarShipper, String driverPlatesShipper, String driverLicenseShipper, String permission) {
         this.idShipper = idShipper;
         this.nameShipper = nameShipper;
         this.avtShipperURL = avtShipperURL;
@@ -32,7 +31,7 @@ public class Shipper {
         this.driverPlatesShipper = driverPlatesShipper;
         this.driverLicenseShipper = driverLicenseShipper;
         this.permission = permission;
-        this.mountOrder = mountOrder;}
+      }
 
     public String getIdShipper() {
         return idShipper;
@@ -130,12 +129,5 @@ public class Shipper {
         this.permission = permission;
     }
 
-    public int getMountOrder() {
-        return mountOrder;
-    }
-
-    public void setMountOrder(int mountOrder) {
-        this.mountOrder = mountOrder;
-    }
 }
 

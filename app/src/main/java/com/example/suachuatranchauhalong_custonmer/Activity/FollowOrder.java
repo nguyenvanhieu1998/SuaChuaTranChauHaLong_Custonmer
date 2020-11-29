@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,6 +42,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class FollowOrder extends AppCompatActivity implements OnMapReadyCallback {
     GoogleMap map;
     TextView txtName, txtPhone, txtAddress;
@@ -64,6 +71,13 @@ public class FollowOrder extends AppCompatActivity implements OnMapReadyCallback
         //TuiDangODau();
          initDataGiaoHang();
         addEvents();
+
+        try {
+            convertLocationToAddress();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -137,58 +151,77 @@ public class FollowOrder extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initDataGiaoHang() {
-        if (listenerIdShipperGiaoHang.getIdOrder().toString() != null) {
-            databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
-                    child(listenerIdShipperGiaoHang.getIdOrder().toString()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    double shipperLatitude, shipperlongitude;
-                    try {
-                        shipperLatitude = Double.parseDouble(snapshot.child("Shipper").child("Location").child("latitude").getValue().toString());
-                        shipperlongitude = Double.parseDouble(snapshot.child("Shipper").child("Location").child("longitude").getValue().toString());
-                    } catch (Exception e) {
-                        shipperLatitude = 20.985101;
-                        shipperlongitude = 105.838750;
+        try {
+            if (intent.getStringExtra("idOrderSendFollowOrder") != null) {
+                databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
+                        child(intent.getStringExtra("idOrderSendFollowOrder")).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        double shipperLatitude, shipperlongitude;
+                        try {
+                            shipperLatitude = Double.parseDouble(snapshot.child("Shipper").child("Location").child("latitude").getValue().toString());
+                            shipperlongitude = Double.parseDouble(snapshot.child("Shipper").child("Location").child("longitude").getValue().toString());
+                        } catch (Exception e) {
+                            shipperLatitude = 20.985101;
+                            shipperlongitude = 105.838750;
+                        }
+                        shipperLocation = new Location("ShipperLocation");
+                        shipperLocation.setLongitude(shipperlongitude);
+                        shipperLocation.setLatitude(shipperLatitude);
+
+                        double myLatitude = Double.parseDouble(snapshot.child("Location").child("latitude").getValue().toString());
+                        double myLongitude = Double.parseDouble(snapshot.child("Location").child("longitude").getValue().toString());
+                        myLocation = new Location("MyLocation");
+                        myLocation.setLongitude(myLongitude);
+                        myLocation.setLatitude(myLatitude);
+
+                        LatLng position = new LatLng(shipperLocation.getLatitude(), shipperLocation.getLongitude());
+                        Shipper = new MarkerOptions()
+                                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                                .title("Shipper")
+                                .snippet("ĐANG GIAO")
+                                .position(position);
+
+                        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+                        map.clear();
+                        map.addMarker(Shipper);
+
+                        LatLng myPosition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                        map.addMarker(new MarkerOptions()
+                                .title("My Location")
+                                .snippet("Pháp Vân")
+                                .position(myPosition));
                     }
-                    shipperLocation = new Location("ShipperLocation");
-                    shipperLocation.setLongitude(shipperlongitude);
-                    shipperLocation.setLatitude(shipperLatitude);
 
-                    double myLatitude = Double.parseDouble(snapshot.child("Location").child("latitude").getValue().toString());
-                    double myLongitude = Double.parseDouble(snapshot.child("Location").child("longitude").getValue().toString());
-                    myLocation = new Location("MyLocation");
-                    myLocation.setLongitude(myLongitude);
-                    myLocation.setLatitude(myLatitude);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    LatLng position = new LatLng(shipperLocation.getLatitude(), shipperLocation.getLongitude());
-                    Shipper = new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
-                            .title("Shipper")
-                            .snippet("ĐANG GIAO")
-                            .position(position);
+                    }
+                });
+            }
+        }catch (NullPointerException ex){
 
-                    //map.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
-                    map.clear();
-                    map.addMarker(Shipper);
-
-                    LatLng myPosition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                    map.addMarker(new MarkerOptions()
-                            .title("My Location")
-                            .snippet("Pháp Vân")
-                            .position(myPosition));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
         }
+
+    }
+    private void convertLocationToAddress() throws IOException {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        addresses = geocoder.getFromLocation( 20.985035665361952, 105.8386055678777, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName();
+        Log.w("address : ","Địa chỉ : " + address + "," + city + ","+ country);
     }
     static String phoneCustomer;
     private void intiDataCustomer() {
         try {
-            databaseReference.child("ListShipper").child(listenerIdShipperGiaoHang.getIdShipper().toString()).addValueEventListener(new ValueEventListener() {
+            databaseReference.child("ListShipper").child(intent.getStringExtra("idShipperSendFollowOrder")).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try {
@@ -215,6 +248,7 @@ public class FollowOrder extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        listenerIdShipperGiaoHang = new ListenerIdShipperGiaoHang();
         map = googleMap;
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setZoomControlsEnabled(true);
@@ -225,10 +259,10 @@ public class FollowOrder extends AppCompatActivity implements OnMapReadyCallback
             return;
         }
         map.setMyLocationEnabled(true);
-        if(listenerIdShipperGiaoHang.getIdOrder().toString()!=null)
+        if(intent.getStringExtra("idOrderSendFollowOrder")!=null)
         {
             databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
-                    child(listenerIdShipperGiaoHang.getIdOrder().toString()).addValueEventListener(new ValueEventListener() {
+                    child(intent.getStringExtra("idOrderSendFollowOrder")).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 

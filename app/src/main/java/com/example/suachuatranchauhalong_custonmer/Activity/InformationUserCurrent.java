@@ -3,6 +3,7 @@ package com.example.suachuatranchauhalong_custonmer.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -60,6 +61,7 @@ public class InformationUserCurrent extends AppCompatActivity implements View.On
     StorageReference mStorageRef;
     int REQUEST_CODE = 1;
     int READ_REQUEST_CODE = 2;
+    Toolbar toolbar;
     private PresenterUpdateInformationForUserCurrent presenterUpdateInformationForUserCurrent;
 
     @Override
@@ -71,7 +73,7 @@ public class InformationUserCurrent extends AppCompatActivity implements View.On
         getDataOfUserCurrent();
         getBitmapFaceUserCurrent();
         addEvents();
-
+        getMountOrderOfCustomer();
     }
     private void  initReferenceObject()
     {
@@ -104,6 +106,20 @@ public class InformationUserCurrent extends AppCompatActivity implements View.On
                     //getSex = "Nữ";
                 }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void getMountOrderOfCustomer()
+    {
+        databaseReference.child("ListOrder").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                txtTottalBillOrder.setText("Đã đặt : "+snapshot.getChildrenCount() + " đơn hàng");
             }
 
             @Override
@@ -161,8 +177,17 @@ public class InformationUserCurrent extends AppCompatActivity implements View.On
         btnUpdate = (Button) findViewById(R.id.ActivityInformationUserCurrent_btnUpdate);
         imgCamera = (ImageView) findViewById(R.id.ActivityInformationUserCurrent_imgCamera);
         imgFolder = (ImageView) findViewById(R.id.ActivityInformationUserCurrent_imgFolder);
+        toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityInformation_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Thông tin cá nhân");
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId())

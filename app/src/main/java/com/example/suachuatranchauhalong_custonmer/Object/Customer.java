@@ -9,14 +9,13 @@ public class Customer {
     private String phoneCustomer;
     private String addressCustomer;
     private String permission;
-    private int mountOrder;
     private int point;
     public Customer()
     {
 
     }
 
-    public Customer(String idCustomer, String avtUriCustomer, String nameCustomer, boolean sexCustomer, String emailCustomer, String phoneCustomer, String addressCustomer, String permission, int mountOrder, int point) {
+    public Customer(String idCustomer, String avtUriCustomer, String nameCustomer, boolean sexCustomer, String emailCustomer, String phoneCustomer, String addressCustomer, String permission, int point) {
         this.idCustomer = idCustomer;
         this.avtUriCustomer = avtUriCustomer;
         this.nameCustomer = nameCustomer;
@@ -26,15 +25,6 @@ public class Customer {
         this.addressCustomer = addressCustomer;
         this.point = point;
         this.permission = permission;
-        this.mountOrder = mountOrder;
-
-    }
-    public int getMountOrder() {
-        return mountOrder;
-    }
-
-    public void setMountOrder(int mountOrder) {
-        this.mountOrder = mountOrder;
     }
 
     public String getIdCustomer() {

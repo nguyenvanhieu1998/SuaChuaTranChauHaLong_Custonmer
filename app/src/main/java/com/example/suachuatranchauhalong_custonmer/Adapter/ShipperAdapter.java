@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ShipperAdapter extends RecyclerView.Adapter<ShipperAdapter.ViewHolder> {
     private List<Shipper> listShipper;
     private Context context;
@@ -53,7 +55,7 @@ public class ShipperAdapter extends RecyclerView.Adapter<ShipperAdapter.ViewHold
         {
             holder.txtSexShipper.setText("Giới tính : Nữ");
         }
-        holder.txtOrderOfShipper.setText("Đã mua : "+ shipper.getMountOrder());
+        //holder.txtOrderOfShipper.setText("Đã giao : "+ shipper.getMountOrder());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,14 +70,14 @@ public class ShipperAdapter extends RecyclerView.Adapter<ShipperAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgShipper;
+        CircleImageView imgShipper;
         TextView txtNameShipper,txtSexShipper,txtOrderOfShipper;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgShipper = (ImageView) itemView.findViewById(R.id.itemShipper_imageShipper);
+            imgShipper = (CircleImageView) itemView.findViewById(R.id.itemShipper_imageShipper);
             txtNameShipper = (TextView) itemView.findViewById(R.id.itemShipper_txtNameShipper);
             txtSexShipper = (TextView) itemView.findViewById(R.id.itemShipper_txtSexShipper);
-            txtOrderOfShipper = (TextView) itemView.findViewById(R.id.itemShipper_txtOrderOfShipper);
+           // txtOrderOfShipper = (TextView) itemView.findViewById(R.id.itemShipper_txtOrderOfShipper);
         }
     }
 }

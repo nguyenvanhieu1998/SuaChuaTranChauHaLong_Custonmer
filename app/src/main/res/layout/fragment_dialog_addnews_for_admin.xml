@@ -82,6 +82,8 @@
             android:text="Thêm tin tức"
             android:textSize="13sp"
             android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/custome_button_dathang"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="50dp" />
@@ -90,6 +92,8 @@
             android:text="Hủy"
             android:textAllCaps="false"
             android:layout_height="50dp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/custome_button_dathang"
             android:layout_width="wrap_content"
             android:layout_marginRight="20dp"
             android:textSize="13sp"

@@ -1,6 +1,7 @@
 package com.example.suachuatranchauhalong_custonmer.FragmentDialog;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.suachuatranchauhalong_custonmer.Activity.ActivityChangePassword;
 import com.example.suachuatranchauhalong_custonmer.Object.Drink;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerIDMenuDrink;
 import com.example.suachuatranchauhalong_custonmer.Object.ListenerTypeNews;
@@ -156,13 +158,21 @@ public class FragmentDialogAddDrinkForAdmin extends DialogFragment implements Vi
         {
             Toast.makeText(getActivity(), "Bạn phải nhập tên và đơn giá của đồ uống ", Toast.LENGTH_SHORT).show();
         }
+        else if( Float.parseFloat(edtPriceDrink.getText().toString().trim())>50000)
+        {
+            Toast.makeText(getActivity(), "Giá đồ uống tối đa là 50.000đ", Toast.LENGTH_SHORT).show();
+        }
         else
         {
             addDrinkToFirebase();
         }
     }
     String photoURL = "";
+    ProgressDialog progressDialog;
     private void addDrinkToFirebase() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Thay đổi mật khẩu .......");
+        progressDialog.show();
         calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateCreateDrink = "" + simpleDateFormat.format(calen.getTime());

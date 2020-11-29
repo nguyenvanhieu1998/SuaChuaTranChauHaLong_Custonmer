@@ -115,7 +115,7 @@ public class ActivityThongKeDonHang extends AppCompatActivity implements OnChart
                 txtOrderCancel.setText("Đơn hàng bị hủy : " + countOrderCancel);
                 txtOrderShipped.setText("Đơn hàng đã giao : "+ countOrderShipped);
                 float[] yData = { countOrderShipped, countOrderCancel };
-                String[] xData = {  "February", "January" };
+                String[] xData = {  "5", "0" };
 
                 for (int i = 0; i < yData.length;i++){
                     yEntrys.add(new PieEntry(yData[i],i));
@@ -124,9 +124,10 @@ public class ActivityThongKeDonHang extends AppCompatActivity implements OnChart
                     xEntrys.add(xData[i]);
                 }
 
-                PieDataSet pieDataSet=new PieDataSet(yEntrys,"Employee Sales");
+                PieDataSet pieDataSet=new PieDataSet(yEntrys,"Đơn hàng");
                 pieDataSet.setSliceSpace(2);
                 pieDataSet.setValueTextSize(12);
+
 
                 ArrayList<Integer> colors=new ArrayList<>();
                 colors.add(Color.BLUE);
@@ -155,10 +156,7 @@ public class ActivityThongKeDonHang extends AppCompatActivity implements OnChart
     public void onValueSelected(Entry e, Highlight h) {
         Toast.makeText(this, "Value: "
                 + e.getY()
-                + ", index: "
-                + h.getX()
-                + ", DataSet index: "
-                + h.getDataSetIndex(), Toast.LENGTH_SHORT).show();
+               , Toast.LENGTH_SHORT).show();
     }
 
     @Override

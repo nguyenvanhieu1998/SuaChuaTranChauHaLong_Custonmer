@@ -1,6 +1,7 @@
 package com.example.suachuatranchauhalong_custonmer.FragmentDialog;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -235,7 +236,11 @@ public class FragmentDialogUpdateMenuDrinkForAdmin extends DialogFragment implem
         }
     }
     String photoURL = "";
+    ProgressDialog progressDialog;
     private void updateMenuDrinkToFirebase() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Cập nhật....");
+        progressDialog.show();
         final StorageReference mountainsRef = mStorageRef.child("MenuDrink").child(idMenuDrinkCurrent +".png");
         StorageReference mountainImagesRef = mStorageRef.child("images/" + idMenuDrinkCurrent + ".png\"");
 
@@ -267,6 +272,7 @@ public class FragmentDialogUpdateMenuDrinkForAdmin extends DialogFragment implem
                         databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("imageUriMenuDrink").setValue(photoURL);
                         databaseReference.child("ListMenuDrink").child(idMenuDrinkCurrent).child("nameMenuDrink").setValue(edtNameMenuDrink.getText().toString());
                         Toast.makeText(getContext(), "Cập nhật menu thành công", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                         dialog.dismiss();
                     }
                 });

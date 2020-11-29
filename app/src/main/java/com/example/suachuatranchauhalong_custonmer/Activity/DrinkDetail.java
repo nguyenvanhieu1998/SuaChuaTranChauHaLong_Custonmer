@@ -1,5 +1,6 @@
 package com.example.suachuatranchauhalong_custonmer.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,6 +12,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -33,6 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class DrinkDetail extends AppCompatActivity implements View.OnClickListener {
     ImageView imgDrink, imgLove, imgPlus, imgMinus;
@@ -288,7 +293,7 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
         thread6.start();
 
     }
-
+    Animation drinkDetailShowIn;
     private void addControls() {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.ActivityDrinkDetail_toolbar);
         setSupportActionBar(toolbar);
@@ -309,6 +314,8 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
         cbThachRauCau = (CheckBox) findViewById(R.id.ACtivityDrinkDetail_checkBoxThachRauCau);
         cbDuaKho = (CheckBox) findViewById(R.id.ACtivityDrinkDetail_checkBoxDuaKho);
         cbNhoKho = (CheckBox) findViewById(R.id.ACtivityDrinkDetail_checkBoxNhoKho);
+       // drinkDetailShowIn = AnimationUtils.loadAnimation(DrinkDetail.this, R.anim.drink_detail_show_in);
+      //  imgDrink.startAnimation(drinkDetailShowIn);
     }
 
     @Override
@@ -354,43 +361,148 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
 //    {
 //        databaseReference.child("ListOrder").child(firebaseUser.getUid().toString())
 //    }
-    private void addDrinkToCart() {
-//        if(databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).getRef()== null);
-//        {
-//            check =2;
-//        }
+    private static ArrayList<OrderDetail> orderDetailArrayList = new ArrayList<>();
+    private void getListOrderDetail()
+    {
         databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //orderDetailArrayList.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+                        OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
+                        orderDetailArrayList.add(orderDetail);
+                    }
+
+                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private int checkkkkkkk=2;
+    private int mountBonus3;
+    private float priceBonus3;
+    private String idOrderDetail3;
+    private void addDrinkToCart3() {
+       // OrderDetail orderDetailCurrent = new OrderDetail();
+        key_push_listorderdetail = databaseReference.child("ListOrderDetail").push().getKey();
+        OrderDetail orderDetailCurrent = new OrderDetail(key_push_listorderdetail, "",
+                intent.getStringExtra("IdDrink").toString(), imgDrink2,
+                nameDrink, mount, totalPrice, showResultCheckBox(), priceGoiThem);
+        getListOrderDetail();
+        Log.w("size arraylist :", "" + orderDetailArrayList.size());
+        for (OrderDetail orderDetail : orderDetailArrayList)
+        {
+            if (orderDetail.getIdDrink().toString().
+                    equals(orderDetailCurrent.getIdDrink().toString()) &&
+                    orderDetail.getBonus().toString().equals(orderDetailCurrent.getBonus().toString()) &&
+                    orderDetail.getIdOrder().equals(orderDetailCurrent.getIdOrder().toString())) {
+                mountBonus3 = orderDetailCurrent.getMount() + orderDetail.getMount();
+                priceBonus3 = orderDetailCurrent.getPrice() + orderDetail.getPrice();
+                idOrderDetail3 = orderDetail.getIdOrderDetail().toString();
+                //Log.w("mountBonus1", "" + mountBonus);
+                checkkkkkkk = 1;
+//                                break;
+                Log.w("testcheck: ", "" + checkkkkkkk + "- getbonus" + orderDetail.getBonus() + "- ckResult" + showResultCheckBox());
+                Log.w("END11:", "");
+                // break;
+            } else {
+                checkkkkkkk = 2;
+                Log.w("testcheck123: ", "" + checkkkkkkk + "- getbonus" + orderDetail.getBonus() + "- ckResult" + showResultCheckBox());
+                Log.w("END11:", "");
+                // break;
+            }
+
+        }
+        if (checkkkkkkk == 1) {
+            databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
+                    child(idOrderDetail3).child("mount").setValue(mountBonus3);
+            databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
+                    child(idOrderDetail3).child("price").setValue(priceBonus3);
+            Log.w("check3 : ", "" + checkkkkkkk);
+            orderDetailArrayList.clear();
+            getListOrderDetail();
+            // check = 0;
+        } else if (checkkkkkkk == 2) {
+            Log.w("check4 : ", "" + checkkkkkkk);
+            Log.d("PriceGoiThem2", "" + priceGoiThem);
+//            key_push_listorderdetail = databaseReference.child("ListOrderDetail").push().getKey();
+//            OrderDetail orderDetail = new OrderDetail(key_push_listorderdetail, "",
+//                    intent.getStringExtra("IdDrink").toString(), imgDrink2,
+//                    nameDrink, mount, totalPrice, showResultCheckBox(), priceGoiThem);
+            databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
+                    child(key_push_listorderdetail).setValue(orderDetailCurrent, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if (databaseError == null) {
+                        //  DialogAddToCart();
+
+                        Toast.makeText(DrinkDetail.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(DrinkDetail.this, "Bạn đã thêm đồ uống thành công", Toast.LENGTH_SHORT).show();
+                        // dialog.dismiss();
+                    } else {
+                        Toast.makeText(DrinkDetail.this, "Bạn đã thêm đồ uống thất bại", Toast.LENGTH_SHORT).show();
+                        //  dialog.dismiss();
+                        // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            orderDetailArrayList.clear();
+            getListOrderDetail();
+
+        }
+
+
+    }
+    private void addDrinkToCart() {
+
+        databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //    mountBonus = mount;
                 mountBonus = 0;
-                priceBonus=0;
-                if(dataSnapshot.exists())
-                {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    if (dataSnapshot1.exists()) {
-                        OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
-                        if (orderDetail.getIdDrink().toString().
-                                equals(intent.getStringExtra("IdDrink").toString()) &&
-                                orderDetail.getBonus().toString().equals(showResultCheckBox())) {
-                            mountBonus = mount + orderDetail.getMount();
-                            priceBonus = totalPrice + orderDetail.getPrice();
-                            idOrderDetail = orderDetail.getIdOrderDetail().toString();
-                            Log.w("mountBonus1", "" + mountBonus);
-                            check = 1;
-                            break;
+                priceBonus = 0;
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            try {
+                                OrderDetail orderDetail = dataSnapshot1.getValue(OrderDetail.class);
+                                if (orderDetail.getIdDrink().toString().
+                                        equals(intent.getStringExtra("IdDrink").toString()) &&
+                                        orderDetail.getBonus().toString().equals(showResultCheckBox()) &&
+                                        orderDetail.getIdOrder().equals("")) {
+                                    mountBonus = mount + orderDetail.getMount();
+                                    priceBonus = totalPrice + orderDetail.getPrice();
+                                    idOrderDetail = orderDetail.getIdOrderDetail().toString();
+                                    //Log.w("mountBonus1", "" + mountBonus);
+                                    check = 1;
+//                                break;
+                                    Log.w("testcheck: ", "" + check + "- getbonus" + orderDetail.getBonus() + "- ckResult" + showResultCheckBox());
+                                    Log.w("END11:", "");
+                                    // break;
+                                } else if (!orderDetail.getIdDrink().toString().
+                                        equals(intent.getStringExtra("IdDrink").toString()) ||
+                                        !orderDetail.getBonus().toString().equals(showResultCheckBox()) &&
+                                        orderDetail.getIdOrder().equals("")){
+                                    check = 2;
 
-                            // break;
-                        } else {
-                            check = 2;
-                            // break;
-                        }
+                                    Log.w("testcheck123: ", "" + check + "- getbonus" + orderDetail.getBonus() + "- ckResult" + showResultCheckBox());
+                                    Log.w("END11:", "");
+                                    // break;
+                                }
+                                else
+                                {
+                                    check=0;
+                                }
+
+                            } catch (NullPointerException ex) {
+
+                            }
+
                     }
-                }
-//                    else
-//                    {
-//                        check=2;
-//                    }
 
                 }
 //                else
@@ -398,7 +510,7 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
 //                    check = 2;
 //                }
 
-              Log.w("check11 : ", "" + check);
+                Log.w("check11 : ", "" + check);
             }
 
             @Override
@@ -413,11 +525,10 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
             databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
                     child(idOrderDetail).child("mount").setValue(mountBonus);
             databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
-                    child(idOrderDetail).child("mount").setValue(priceBonus);
+                    child(idOrderDetail).child("price").setValue(priceBonus);
             Log.w("check3 : ", "" + check);
             // check = 0;
-        }
-        else if (check == 2) {
+        } else if (check == 2) {
             Log.w("check4 : ", "" + check);
             Log.d("PriceGoiThem2", "" + priceGoiThem);
             key_push_listorderdetail = databaseReference.child("ListOrderDetail").push().getKey();
@@ -441,14 +552,42 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
                     }
                 }
             });
-          //  check = 0;
+            //  check = 0;
             //    Log.w("check: ", ": " + check);
             //  }
             //  Log.w("check0001 : ", "" + check);
         }
-        Log.d("check tottal : " , "" + check);
+        Log.d("check tottal : ", "" + check);
     }
+
 //    private void addDrinkToCart2() {
+//            Log.w("check4 : ", "" + check);
+//            Log.d("PriceGoiThem2", "" + priceGoiThem);
+//            key_push_listorderdetail = databaseReference.child("ListOrderDetail").push().getKey();
+//            OrderDetail orderDetail = new OrderDetail(key_push_listorderdetail, "",
+//                    intent.getStringExtra("IdDrink").toString(), imgDrink2,
+//                    nameDrink, mount, totalPrice, showResultCheckBox(), priceGoiThem);
+//            databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).
+//                    child(key_push_listorderdetail).setValue(orderDetail, new DatabaseReference.CompletionListener() {
+//                @Override
+//                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                    if (databaseError == null) {
+//                        //  DialogAddToCart();
+//
+//                        Toast.makeText(DrinkDetail.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+//                        //    Toast.makeText(DrinkDetail.this, "Bạn đã thêm đồ uống thành công", Toast.LENGTH_SHORT).show();
+//                        // dialog.dismiss();
+//                    } else {
+//                        Toast.makeText(DrinkDetail.this, "Bạn đã thêm đồ uống thất bại", Toast.LENGTH_SHORT).show();
+//                        //  dialog.dismiss();
+//                        // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            });
+//
+//    }
+
+    //    private void addDrinkToCart2() {
 ////        if(databaseReference.child("ListOrderDetail").child(firebaseUser.getUid().toString()).getRef()== null);
 ////        {
 ////            check =2;
@@ -631,7 +770,7 @@ public class DrinkDetail extends AppCompatActivity implements View.OnClickListen
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addDrinkToCart();
+                addDrinkToCart3();
                 // Intent intent = new Intent(DrinkDetail.this,MenuDrinkDetail.class);
                 // startActivity(intent);
                 finish();

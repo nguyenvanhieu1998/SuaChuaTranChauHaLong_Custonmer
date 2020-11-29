@@ -79,12 +79,19 @@
         <Button
             android:id="@+id/dialogAddVoucher_btnAddVoucher"
             android:text="Thêm"
+            android:background="@drawable/custome_button_dathang"
+            android:textColor="#FFFFFF"
+            android:layout_marginRight="10dp"
+            android:paddingHorizontal="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Button>
         <Button
             android:id="@+id/dialogAddVoucher_btnCancel"
             android:text="Huỷ"
+            android:background="@drawable/custome_button_dathang"
+            android:textColor="#FFFFFF"
+            android:paddingHorizontal="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Button>

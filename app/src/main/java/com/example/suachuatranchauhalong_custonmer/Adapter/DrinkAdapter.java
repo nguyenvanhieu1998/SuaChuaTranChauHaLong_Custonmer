@@ -116,7 +116,14 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder> 
     }
     @Override
     public int getItemCount() {
-        return listDrink.size();
+        int count = 0 ;
+        try {
+            count =  listDrink.size();
+        }catch (NullPointerException ex)
+        {
+
+        }
+        return count;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -107,7 +107,7 @@ public class ModelSetInformationUserCurrent {
                     @Override
                     public void onSuccess(Uri uri) {
                         photoURL = uri.toString();
-                        Customer customer = new Customer(uid,photoURL,name,getSex,email,phone,address,"customer",0,0);
+                        Customer customer = new Customer(uid,photoURL,name,getSex,email,phone,address,"customer",0);
                         //  mb = new member(name,testAccountType,email,phone,address,userCurrentID,photoURL,status,"user");
                         databaseReference.child("ListCustomer").child(user.getUid().toString()).setValue(customer, new DatabaseReference.CompletionListener() {
                             @Override

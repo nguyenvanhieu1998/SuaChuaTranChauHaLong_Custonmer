@@ -14,6 +14,7 @@
             android:id="@+id/FragmentDialogAddMenuDrink_imgTittleMenuDrink"
             android:layout_gravity="center_horizontal"
             android:layout_width="300dp"
+            android:layout_marginTop="10dp"
             android:src="@color/colorPrimary"
             android:layout_height="150dp">
         </ImageView>
@@ -62,6 +63,8 @@
                 android:textSize="13sp"
                 android:textAllCaps="false"
                 android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/custome_button_dathang"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp" />
             <Button
@@ -69,6 +72,8 @@
                 android:text="Hủy"
                 android:textAllCaps="false"
                 android:layout_height="50dp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/custome_button_dathang"
                 android:layout_width="wrap_content"
                 android:layout_marginRight="20dp"
                 android:textSize="13sp"

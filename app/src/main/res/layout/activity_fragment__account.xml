@@ -15,7 +15,6 @@
 <LinearLayout
     android:id="@+id/FragmentAccount_linearContent"
     android:layout_height="match_parent"
-    android:visibility="gone"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
@@ -87,7 +86,7 @@
                     android:text="0"
                     android:textSize="18sp"
                     android:textColor="#F84F1A"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="57dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                 </TextView>

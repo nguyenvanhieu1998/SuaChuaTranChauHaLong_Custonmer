@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -248,7 +249,8 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
     private static String idVoucher1;
     private void addVoucher() {
 //        dialogAddVoucher_imgVoucher.setImageResource(R.drawable.ic_launcher_background);
-                if(dialogAddVoucher_edtGiaTriApDung.getText().toString().trim().equals("") || dialogAddVoucher_edtPromotion.getText().toString().trim().equals(""))
+                if(dialogAddVoucher_edtGiaTriApDung.getText().toString().trim().equals("") || dialogAddVoucher_edtPromotion.getText().toString().trim().equals("") ||
+                        dialogAddVoucher_edtPoint.getText().toString().trim().equals(""))
                 {
                     Toast.makeText(ActivityListVoucherForAdmin.this, "Bạn phải nhập đầy đủ dữ liệu", Toast.LENGTH_SHORT).show();
                 }
@@ -261,7 +263,11 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
                 }
     }
     String photoURL;
+    ProgressDialog progressDialog;
     private void addVoucherToFirebase() {
+        progressDialog = new ProgressDialog(ActivityListVoucherForAdmin.this);
+        progressDialog.setMessage("Đang thêm....");
+        progressDialog.show();
         calen = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateWrite = "" + simpleDateFormat.format(calen.getTime());
@@ -318,6 +324,7 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
                                     dialogAddVoucher.dismiss();
                                     // Toast.makeText(getActivity(), "Đăng tin thất bại !", Toast.LENGTH_SHORT).show();
                                 }
+                                progressDialog.dismiss();
 
                             }
                         });
@@ -356,7 +363,7 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
         dialogUpdateVoucher_imgVoucher = (ImageView) dialogUpdateVoucher.findViewById(R.id.dialogUpdateVoucher_imgVoucher);
         dialogUpdateVoucher_imgCamera = (ImageView) dialogUpdateVoucher.findViewById(R.id.dialogUpdateVoucher_imgCamera);
         dialogUpdateVoucher_imgFolder = (ImageView) dialogUpdateVoucher.findViewById(R.id.dialogUpdateVoucher_imgFolder);
-        dialogUpdateVoucher_edtPoint = (EditText) dialogAddVoucher.findViewById(R.id.dialogUpdateVoucher_edtDiemQuyDoi);
+        dialogUpdateVoucher_edtPoint = (EditText) dialogUpdateVoucher.findViewById(R.id.dialogUpdateVoucher_edtDiemQuyDoi);
     }
     private void addEventsDialogUpdateVoucher() {
         dialogUpdateVoucher_btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -382,8 +389,8 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent,REQUEST_CODE_2);
     }
-    int pricePromotion,point;
-    float priceApple;
+    static int pricePromotion,point;
+    static float priceApple;
     private void DialogUpdateVoucher(final String idVoucher)
     {
         dialogUpdateVoucher = new Dialog(this);
@@ -407,13 +414,14 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
         dialogUpdateVoucher_btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                  if(dialogUpdateVoucher_edtGiaTriApDung.getText().toString().trim().equals("")||dialogUpdateVoucher_edtPromotion.getText().toString().trim().equals(""))
+                  if(dialogUpdateVoucher_edtGiaTriApDung.getText().toString().trim().equals("")||dialogUpdateVoucher_edtPromotion.getText().toString().trim().equals("") ||
+                          dialogUpdateVoucher_edtPoint.getText().toString().trim().equals(""))
                   {
                       Toast.makeText(ActivityListVoucherForAdmin.this, "Bạn phải nhập đầy đủ dữ liệu", Toast.LENGTH_SHORT).show();
                   }
                   else if(priceApple == Float.parseFloat(dialogUpdateVoucher_edtGiaTriApDung.getText().toString().trim())
                           && pricePromotion == Integer.parseInt(dialogUpdateVoucher_edtPromotion.getText().toString().trim())
-                             && point ==Integer.parseInt(dialogUpdateVoucher_edtPoint.getText().toString().trim()))
+                             && point == Integer.parseInt(dialogUpdateVoucher_edtPoint.getText().toString().trim()))
                   {
                       Toast.makeText(ActivityListVoucherForAdmin.this, "Bạn đã không thay đổi thông tin gì ", Toast.LENGTH_SHORT).show();
                   }
@@ -570,6 +578,7 @@ public class ActivityListVoucherForAdmin extends AppCompatActivity implements Vo
                         .into(dialogUpdateVoucher_imgVoucher);
                 dialogUpdateVoucher_edtGiaTriApDung.setText("" + voucher.getPriceApply());
                 dialogUpdateVoucher_edtPromotion.setText("" + voucher.getPricePromotion());
+                dialogUpdateVoucher_edtPoint.setText("" + voucher.getPoint());
                 pricePromotion = voucher.getPricePromotion();
                 priceApple = voucher.getPriceApply();
                 point = voucher.getPoint();

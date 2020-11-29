@@ -150,7 +150,7 @@ public class Fragment_News extends Fragment implements View.OnClickListener {
     }
         private void addInitData() {
         setNews();
-        setPromotion();
+       // setPromotion();
         setUserCurrent();
        //     holder.recyclerKhuyenMai.setAdapter(newAdapter);
 
@@ -197,7 +197,7 @@ public class Fragment_News extends Fragment implements View.OnClickListener {
                         if(customer.getPermission().equals("admin"))
                         {
                             holder.imgAddNews.setVisibility(View.VISIBLE);
-                            holder.imgAddPromotion.setVisibility(View.VISIBLE);
+                         //   holder.imgAddPromotion.setVisibility(View.VISIBLE);
 //                    txtName.setText(mb.getName());
 //                    Picasso.with(TrangChuActivity.this).load(mb.getPhotoURL()).into(imgAdmin);
 //                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -274,10 +274,6 @@ public class Fragment_News extends Fragment implements View.OnClickListener {
     }
 
     private void setNews() {
-//        Thread thread5 = new Thread(){
-//            @Override
-//            public void run() {
-//                super.run();
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 arrayListNews = new ArrayList<>();
                 databaseReference.child("ListNews").child("News").addValueEventListener(new ValueEventListener() {

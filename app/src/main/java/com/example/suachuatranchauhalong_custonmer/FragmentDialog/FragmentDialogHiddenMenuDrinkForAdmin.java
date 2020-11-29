@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -113,6 +114,10 @@ public class FragmentDialogHiddenMenuDrinkForAdmin extends DialogFragment implem
 
             }
         });
+        DividerItemDecoration dividerHorizontal =
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+
+        recyclerViewMenuDrink.addItemDecoration(dividerHorizontal);
         menuDrinkAdapter = new MenuDrink_FragmentDialogUpdateAndHiddenMenuDrink(getActivity(),menuDrinkArrayList,this);
         recyclerViewMenuDrink.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true));
         recyclerViewMenuDrink.setLayoutManager(new LinearLayoutManager(getActivity()));

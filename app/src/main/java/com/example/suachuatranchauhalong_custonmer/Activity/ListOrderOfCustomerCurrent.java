@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.suachuatranchauhalong_custonmer.Adapter.OrderAdapter;
+import com.example.suachuatranchauhalong_custonmer.Adapter.OrderApater_Customer;
 import com.example.suachuatranchauhalong_custonmer.Object.Order;
 import com.example.suachuatranchauhalong_custonmer.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +35,13 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
     ArrayList<Order> arrayListOrder;
-    OrderAdapter orderAdapter;
+    OrderApater_Customer orderApater_customer;
     RecyclerView recyclerViewMyOrder;
     Calendar calen;
     String dateOrder;
     TextView txtTittle;
     Toolbar toolbar;
+    Spinner spinnerStatusOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +49,8 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
         initReferenceObject();
         addControls();
         check();
-        initData();
+       // initData();
+        initSpinner();
     }
         private void initReferenceObject()
         {
@@ -60,8 +67,7 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
                                 {
-                                    Order order = dataSnapshot1.getValue(Order.class);
-                                    if(order.getStatusCurrent()==0)
+                                    if(dataSnapshot1.getChildrenCount()!=0)
                                     {
                                         check = true;
                                     }
@@ -78,7 +84,56 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
                         }
                     });
         }
-        private void initData()
+    String arr[]={
+            "Tất cả",
+            "Chờ xác nhận",
+            "Đã xác nhận",
+            "Đang chuẩn bị đồ",
+            "Đang giao hàng",
+            "Đã giao hàng",};
+
+    private void initSpinner()
+    {
+
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>
+                (
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        arr
+                );
+        //phải gọi lệnh này để hiển thị danh sách cho Spinner
+        adapter.setDropDownViewResource
+                (android.R.layout.simple_list_item_single_choice);
+        //Thiết lập adapter cho Spinner
+        spinnerStatusOrder.setAdapter(adapter);
+        spinnerStatusOrder.setOnItemSelectedListener(new MyProcessEvent());
+    }
+    private class MyProcessEvent implements
+            AdapterView.OnItemSelectedListener
+    {
+        //Khi có chọn lựa thì vào hàm này
+//        public void onItemSelected(AdapterView<?> arg0,
+//                                   View arg1,
+//                                   int arg2,
+//                                   long arg3) {
+//            //arg2 là phần tử được chọn trong data source
+//
+//        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            // selection.setText(arr[arg2]);
+           // yearOfSpinner = Integer.parseInt(arr[i]);
+            initData(arr[i]);
+        //  Toast.makeText(ListOrderOfCustomerCurrent.this, "" + arr[i], Toast.LENGTH_SHORT).show();
+        }
+
+        //Nếu không chọn gì cả
+        public void onNothingSelected(AdapterView<?> arg0) {
+            //  selection.setText("");
+        }
+    }
+        private void initData(final String status)
         {
             arrayListOrder = new ArrayList<>();
             databaseReference.child("ListOrder").child(firebaseUser.getUid().toString()).
@@ -89,13 +144,70 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
                         for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
                         {
                             Order order = dataSnapshot1.getValue(Order.class);
-                            if(order.getStatusCurrent()==0)
+//                            if(order.getStatusCurrent()==1)
+//                            {
+                            if(status.equals("Tất cả"))
                             {
-                                arrayListOrder.add(order);
+                                if(order.getStatus()==0 || order.getStatus()==1 || order.getStatus()==2 ||
+                                        order.getStatus()==3 || order.getStatus()==4 || order.getStatus()==5 )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
                             }
+                            if(status.equals("Chờ xác nhận"))
+                            {
+                                if(order.getStatus()==1  )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
+                            }
+                            if(status.equals("Đã xác nhận"))
+                            {
+                                if(order.getStatus()==2 )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
+                            }
+                            if(status.equals("Đang chuẩn bị đồ"))
+                            {
+                                if(order.getStatus()==3 )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
+                            }
+                            if(status.equals("Đang giao hàng"))
+                            {
+                                if(order.getStatus()==4 )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
+                            }
+                            if(status.equals("Đã giao hàng"))
+                            {
+                                if(order.getStatus()==5 )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
+                            }
+                            if(status.equals("Đã hủy"))
+                            {
+                                if(order.getStatus()==0 )
+                                {
+                                    arrayListOrder.add(order);
+                                }
+
+                            }
+
+                           // }
                         }
 
-                    orderAdapter.notifyDataSetChanged();
+                    orderApater_customer.notifyDataSetChanged();
                 }
 
                 @Override
@@ -107,10 +219,10 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
 //                    new DividerItemDecoration(ListOrderOfCustomerCurrent.this, DividerItemDecoration.VERTICAL);
 //
 //            recyclerViewMyOrder.addItemDecoration(dividerHorizontal);
-            orderAdapter = new OrderAdapter(arrayListOrder,this);
+            orderApater_customer = new OrderApater_Customer(arrayListOrder,this);
             recyclerViewMyOrder.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
             recyclerViewMyOrder.setLayoutManager(new LinearLayoutManager(this));
-            recyclerViewMyOrder.setAdapter(orderAdapter);
+            recyclerViewMyOrder.setAdapter(orderApater_customer);
         }
         @Override
         public boolean onSupportNavigateUp() {
@@ -123,6 +235,7 @@ public class ListOrderOfCustomerCurrent extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("Đơn hàng của tôi");
+            spinnerStatusOrder = (Spinner) findViewById(R.id.ActivityListMyOrder_spinnerStatus) ;
             recyclerViewMyOrder = (RecyclerView) findViewById(R.id.ActivityListMyOrder_recycleViewOrder);
             txtTittle = (TextView) findViewById(R.id.ActivityListMyOrder_txtTittle);
         }

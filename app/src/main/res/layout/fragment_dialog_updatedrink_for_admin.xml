@@ -79,12 +79,16 @@
                 android:text="Cập nhật"
                 android:textSize="13sp"
                 android:textAllCaps="false"
+                android:background="@drawable/custome_button_dathang"
+                android:textColor="#FFFFFF"
                 android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp" />
             <Button
                 android:id="@+id/FragmentDialogUpdateDrink_btnCancel"
                 android:text="Hủy"
+                android:background="@drawable/custome_button_dathang"
+                android:textColor="#FFFFFF"
                 android:textAllCaps="false"
                 android:layout_height="50dp"
                 android:layout_width="wrap_content"
